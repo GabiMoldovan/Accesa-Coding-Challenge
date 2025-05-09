@@ -47,31 +47,18 @@ public class Item {
     @Schema(description = "the unit type of the item")
     private UnitType unitType;
 
-    @Column(nullable = false)
-    @Schema(description = "the ")
-    float totalPrice;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Schema(description = "the currency of the item")
     private Currency currency;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spendings_id", nullable = false)
-    @JsonIgnore
-    @ToString.Exclude
-    @Schema(description = "the spending entry to which the item belongs")
-    private Spending spending;
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    @Schema(description = "")
+    private Store store;
 
-    public Item(String itemName, Category category, String brand, float units, float pricePerUnit, UnitType unitType, float totalPrice, Currency currency, Spending spending) {
-        this.itemName = itemName;
-        this.category = category;
-        this.brand = brand;
-        this.units = units;
-        this.pricePerUnit = pricePerUnit;
-        this.unitType = unitType;
-        this.totalPrice = totalPrice;
-        this.currency = currency;
-        this.spending = spending;
+    @Transient
+    public float getTotalPrice() {
+        return pricePerUnit * units;
     }
 }

@@ -8,8 +8,6 @@ import lombok.*;
 @Table(name = "basket_items")
 @Setter
 @Getter
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor
 public class BasketItem {
     @Id
@@ -22,26 +20,22 @@ public class BasketItem {
     @Schema(description = "the user that owns the basket")
     private User user;
 
-    @Column(nullable = false)
-    @Schema(description = "The id of the item in the basket")
-    private int itemId;
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    @Schema(description = "")
+    private Item item;
 
     @Column(nullable = false)
-    @Schema(description = "the id of the store that the user is making the purchases")
-    private Long storeId;
+    @Schema(description = "")
+    private float quantity;
 
-    @Column(nullable = false)
-    @Schema(description = "the price per unit of the product at the moment of purchase")
-    private float pricePerUnit;
+    @Schema(description = "")
+    private float priceAtAddition;
 
-    @Column(nullable = false)
-    @Schema(description = "the number of units that the user wants to purchase")
-    private float units;
-
-    public BasketItem(int itemId, Long storeId, float pricePerUnit, float units) {
-        this.itemId = itemId;
-        this.storeId = storeId;
-        this.pricePerUnit = pricePerUnit;
-        this.units = units;
+    public BasketItem(User user, Item item, float quantity) {
+        this.user = user;
+        this.item = item;
+        this.quantity = quantity;
+        this.priceAtAddition = item.getPricePerUnit();
     }
 }
