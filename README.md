@@ -11,6 +11,7 @@ THE PROJECT RUNS ON JAVA 21
 
 3. Open the project and add the environment variable which is the jdbc connection string.
 Mine looks like this: DATASOURCE_URL=jdbc:postgresql://localhost:5432/AccesaInternship;DATASOURCE_USER=postgres;DATASOURCE_PASS=youpasswordhere;
+
 If you have the default pgAdmin settings, use the same username, but modify the DATASOURCE_PASS with your own password.
 Also change the name of the database if you didn't name it AccesaInternship
 
@@ -43,3 +44,8 @@ I added the following dependencies: DevTools, Spring Web, Spring Data JPA, PostG
 4. I added the database
 
 5. Managed to make all the configurations necessary for implementing the project
+
+
+10.05.2025:
+
+1. Added all the model entities
