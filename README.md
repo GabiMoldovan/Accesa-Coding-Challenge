@@ -9,12 +9,18 @@ THE PROJECT RUNS ON JAVA 21
 
 2. Create the PostGreSQL database. Name it AccesaInternship
 
-3. Open the project and change the database credentials in the application.properties in the resources folder.
-If you have the default pgAdmin settings, use the same username, but modify the spring.datasource.password=1337 with your own password.
-Also change the name of the databse if you didn't name it AccesaInternship
+3. Open the project and add the environment variable which is the jdbc connection string.
+Mine looks like this: DATASOURCE_URL=jdbc:postgresql://localhost:5432/AccesaInternship;DATASOURCE_USER=postgres;DATASOURCE_PASS=youpasswordhere;
+If you have the default pgAdmin settings, use the same username, but modify the DATASOURCE_PASS with your own password.
+Also change the name of the database if you didn't name it AccesaInternship
 
-4. If you want to view the data in the table, add the database (the sidebar on the right, there is the database icon right above the maven one).
+5. If you want to view the data in the tables, add the database (the sidebar on the right, there is the database icon right above the maven one).
 Click on New, Data Source, then select PostGreSQL. Put your user, password, and the name of the databse.
+Or you can view it in pgAdmin
+
+
+
+
 
 In this file, you will find the documentation for implementing the project.
 It has all the progress throughout each day.
@@ -36,3 +42,4 @@ I added the following dependencies: DevTools, Spring Web, Spring Data JPA, PostG
 
 4. I added the database
 
+5. Managed to make all the configurations necessary for implementing the project
