@@ -29,7 +29,7 @@ I added the following dependencies: DevTools, Spring Web, Spring Data JPA, PostG
 
 2. I created a class diagram for the entities in the project
 
-<img width="546" alt="Screenshot_1" src="https://github.com/user-attachments/assets/1adb3909-abb3-4bcb-aa07-f3bb548f954d" />
+<img width="550" alt="Screenshot_3" src="https://github.com/user-attachments/assets/7cdff851-4493-447e-8435-7e350646e1fe" />
 
 
 3. I created the database in pgAdmin. I named it: AccesaInternship
