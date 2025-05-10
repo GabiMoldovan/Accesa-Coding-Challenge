@@ -59,3 +59,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 4. I created the exceptions
 
 5. I created the DTOs
+
+6. I created the mappers
+
+7. I created the UserService and AuthService
