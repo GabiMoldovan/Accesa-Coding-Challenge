@@ -36,7 +36,7 @@ public class ItemDiscount {
 
     @Column(nullable = false)
     @Schema(description = "")
-    private float discountProcentage;
+    private float discountPercentage;
 
     @Column(nullable = false)
     @Schema(description = "")

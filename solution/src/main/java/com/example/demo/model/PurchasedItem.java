@@ -27,11 +27,11 @@ public class PurchasedItem {
 
     @Column(nullable = false)
     @Schema(description = "")
-    private Float pricePerUnit;
+    private float pricePerUnit;
 
     @Column(nullable = false)
     @Schema(description = "")
-    private Float units;
+    private float units;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

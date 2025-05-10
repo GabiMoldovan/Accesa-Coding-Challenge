@@ -34,9 +34,9 @@ public class Spending {
 
     @Column(nullable = false)
     @Schema(description = "")
-    private LocalDateTime purchaseDate;
+    private float totalPrice;
 
     @Column(nullable = false)
     @Schema(description = "")
-    private float totalPrice;
+    private LocalDateTime purchaseDate;
 }
