@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +30,7 @@ public class Spending {
 
     @OneToMany(mappedBy = "spending", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(description = "")
-    private List<PurchasedItem> purchasedItems = new ArrayList<>();
+    private List<PurchasedItem> purchasedItems;
 
     @Column(nullable = false)
     @Schema(description = "")

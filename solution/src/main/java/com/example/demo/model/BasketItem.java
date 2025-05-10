@@ -15,27 +15,26 @@ public class BasketItem {
     @Schema(description = "An instance of an item in a basket")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    @Schema(description = "the user that owns the basket")
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "basket_id", nullable = false)
+    @Schema(description = "the basket to which this item belongs")
+    private Basket basket;
 
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
-    @Schema(description = "")
-    private Item item;
+    @Schema(description = "The item that's in the basket")
+    private StoreItem storeItem;
 
     @Column(nullable = false)
-    @Schema(description = "")
+    @Schema(description = "The quantity of that item")
     private float quantity;
 
-    @Schema(description = "")
+    @Schema(description = "Price per unit at the moment of adding to basket")
     private float priceAtAddition;
 
-    public BasketItem(User user, Item item, float quantity) {
-        this.user = user;
-        this.item = item;
+    public BasketItem(StoreItem storeItem, float quantity) {
+        this.storeItem = storeItem;
         this.quantity = quantity;
-        this.priceAtAddition = item.getPricePerUnit();
+        this.priceAtAddition = storeItem.getPricePerUnit();
     }
 }

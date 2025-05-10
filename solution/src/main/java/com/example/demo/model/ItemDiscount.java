@@ -21,9 +21,9 @@ public class ItemDiscount {
 
 
     @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "store_item_id", nullable = false)
     @Schema(description = "")
-    private Item item;
+    private StoreItem storeItem;
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
@@ -34,7 +34,7 @@ public class ItemDiscount {
     @Schema(description = "")
     private float oldPrice;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     @Schema(description = "")
     private float discountProcentage;
 

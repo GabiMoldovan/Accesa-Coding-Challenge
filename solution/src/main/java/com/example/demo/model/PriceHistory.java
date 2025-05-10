@@ -20,9 +20,14 @@ public class PriceHistory {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "store_item_id", nullable = false)
     @Schema(description = "")
-    private Item item;
+    private StoreItem storeItem;
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    @Schema(description = "")
+    private Store store;
 
     @Column(name = "date", nullable = false)
     @Schema(description = "")

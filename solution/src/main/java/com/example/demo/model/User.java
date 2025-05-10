@@ -42,12 +42,12 @@ public class User {
     private List<Spending> spendings;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Schema(description = "the list of items that the user has in their basket")
-    private List<BasketItem> basket;
+    @Schema(description = "baskets owned by the user")
+    private List<Basket> baskets;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(description = "the list of items that the user has set an alert for")
-    private List<PriceAlert> priceAlerts = new ArrayList<>();
+    private List<PriceAlert> priceAlerts;
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;

@@ -31,7 +31,7 @@ public class PurchasedItem {
 
     @Column(nullable = false)
     @Schema(description = "")
-    private Float quantity;
+    private Float units;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

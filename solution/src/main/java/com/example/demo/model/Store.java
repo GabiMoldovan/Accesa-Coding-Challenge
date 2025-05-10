@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,10 +22,14 @@ public class Store {
     private String companyName;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Schema(description = "")
-    private List<Item> items = new ArrayList<>();
+    @Schema(description = "The items that the store has")
+    private List<StoreItem> storeItems;
 
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Schema(description = "")
-    private List<ItemDiscount> discounts = new ArrayList<>();
+    private List<ItemDiscount> discounts;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(description = "")
+    private List<PriceHistory> priceHistoryEntries;
 }

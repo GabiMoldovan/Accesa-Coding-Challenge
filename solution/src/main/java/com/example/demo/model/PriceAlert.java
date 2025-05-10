@@ -23,9 +23,9 @@ public class PriceAlert {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "store_item_id", nullable = false)
     @Schema(description = "")
-    private Item item;
+    private StoreItem storeItem;
 
     @Column(name = "target_price", nullable = false)
     @Schema(description = "")
