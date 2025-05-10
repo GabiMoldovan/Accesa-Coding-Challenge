@@ -36,6 +36,8 @@ I added the following dependencies: DevTools, Spring Web, Spring Data JPA, PostG
 
 2. I created a class diagram for the entities in the project
 
+DISCLAIMER: I know that the photo it not clear. If you want to see the diagram for yourself, please take a look inside the diagrams folder. I provided instructions so that you can load it up yourself, it is very easy.
+
 <img width="700" alt="Screenshot_3" src="https://github.com/user-attachments/assets/19fffa12-98a7-40fd-b686-724553c4ef77" />
 
 
