@@ -32,7 +32,7 @@ Track-Progress:
 
 09.05.2025:
 1. Created the Spring Boot project using Spring Initializr.
-I added the following dependencies: DevTools, Spring Web, Spring Data JPA, PostGreSQL Driver.
+I added the following dependencies: DevTools, Spring Web, Spring Data JPA, Spring Security, PostGreSQL Driver.
 
 2. I created a class diagram for the entities in the project
 
@@ -63,3 +63,11 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 6. I created the mappers
 
 7. I created the UserService and AuthService
+
+11.05.2025:
+
+1. Added the login/register logic with crypted passwords
+
+2. Created the files for the rest of the Services
+
+3. Began working on a diagram for the functionalities of the services
