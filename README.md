@@ -53,3 +53,7 @@ I added the following dependencies: DevTools, Spring Web, Spring Data JPA, PostG
 2. Finished the model entities and the class diagram
 
 3. I created the JpaRepositoryes for the entities
+
+4. I created the exceptions
+
+5. I created the DTOs
