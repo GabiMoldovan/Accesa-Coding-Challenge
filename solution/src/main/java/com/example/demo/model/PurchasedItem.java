@@ -13,27 +13,28 @@ import lombok.*;
 public class PurchasedItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "")
+    @Schema(description = "the id of the purchase")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "spending_id", nullable = false)
-    @Schema(description = "")
+    @Schema(description = "the spending id to which the item belongs to")
     private Spending spending;
 
     @Column(nullable = false)
-    @Schema(description = "")
+    @Schema(description = "the item name")
     private String itemName;
 
     @Column(nullable = false)
-    @Schema(description = "")
+    @Schema(description = "price per unit at the moment of purchase")
     private float pricePerUnit;
 
     @Column(nullable = false)
-    @Schema(description = "")
+    @Schema(description = "number of units at the moment of purchase")
     private float units;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Schema(description = "the unit type of the item at the moment of purchase")
     private UnitType unitType;
 }

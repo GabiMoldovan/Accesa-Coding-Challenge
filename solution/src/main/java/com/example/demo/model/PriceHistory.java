@@ -21,19 +21,19 @@ public class PriceHistory {
 
     @ManyToOne
     @JoinColumn(name = "store_item_id", nullable = false)
-    @Schema(description = "")
+    @Schema(description = "the id of the item in that store")
     private StoreItem storeItem;
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
-    @Schema(description = "")
+    @Schema(description = "the id of the store")
     private Store store;
 
     @Column(name = "date", nullable = false)
-    @Schema(description = "")
+    @Schema(description = "the date when the price changed")
     private LocalDateTime date;
 
     @Column(name = "price", nullable = false)
-    @Schema(description = "")
+    @Schema(description = "the new price")
     private float price;
 }
