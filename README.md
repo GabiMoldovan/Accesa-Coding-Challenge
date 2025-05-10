@@ -49,3 +49,7 @@ I added the following dependencies: DevTools, Spring Web, Spring Data JPA, PostG
 10.05.2025:
 
 1. Added all the model entities
+
+2. Finished the model entities and the class diagram
+
+3. I created the JpaRepositoryes for the entities
