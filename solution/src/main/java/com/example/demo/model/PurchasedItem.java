@@ -9,6 +9,7 @@ import lombok.*;
 @Table(name = "purchased_items")
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor
 public class PurchasedItem {
     @Id

@@ -1,7 +1,6 @@
 package com.example.demo.dto.basket;
 
 import com.example.demo.dto.basketItem.BasketItemResponse;
-import com.example.demo.model.BasketItem;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;

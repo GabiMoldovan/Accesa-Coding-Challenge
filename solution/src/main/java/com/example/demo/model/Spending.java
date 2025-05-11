@@ -11,6 +11,7 @@ import java.util.List;
 @Table(name = "spendings")
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor
 public class Spending {
     @Id

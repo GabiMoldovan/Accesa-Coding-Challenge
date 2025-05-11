@@ -8,7 +8,9 @@ import lombok.*;
 @Table(name = "basket_items")
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class BasketItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
