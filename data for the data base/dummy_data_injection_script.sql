@@ -1,0 +1,213 @@
+-- items data
+
+INSERT INTO items (id, item_name, category, brand, unit_type) VALUES
+(1, 'lapte zuzu', 'LACTATE', 'Zuzu', 'L'),
+(2, 'iaurt grecesc', 'LACTATE', 'Proxi', 'KG'),
+(3, 'oua marimea M', 'OUA', 'facute de cocos', 'BUC'),
+(4, 'branza telemea', 'LACTATE', 'Proxi', 'KG'),
+(5, 'paine alba', 'PANIFICATIE', 'Proxi', 'G'),
+(6, 'rosii cherry', 'LEGUME_SI_FRUCTE', 'Generic', 'G'),
+(7, 'piept pui', 'CARNE', 'Avicola', 'KG'),
+(8, 'spaghetti', 'PASTE_FAINOASE', 'Barilla', 'G'),
+(9, 'zahar tos', 'ALIMENTE_DE_BAZA', 'Proxi', 'KG'),
+(10, 'apa plata', 'BAUTURI', 'Aqua Carpatica', 'L'),
+(11, 'banane', 'LEGUME_SI_FRUCTE', 'Generic', 'KG'),
+(12, 'ulei floarea-soarelui', 'ALIMENTE_DE_BAZA', 'Spornic', 'L'),
+(13, 'biscuiti cu unt', 'GUSTARI', 'RoStar', 'KG'),
+(14, 'cafea macinata', 'CAFEA', 'Tchibo', 'KG'),
+(15, 'detergent lichid', 'PRODUSE_DE_MENAJ', 'Dero', 'L'),
+(16, 'sampon par gras', 'INGRIJIRE_PERSONALA', 'Schauma', 'ML'),
+(17, 'hartie igienica', 'PRODUSE_DE_MENAJ', 'Motto', 'ROLE'),
+(18, 'piper negru macinat', 'CONDIMENTE', 'Kamis', 'G'),
+(19, 'vin alb demisec', 'BAUTURI', 'Cotnari', 'L'),
+(20, 'ciocolata neagra 70%', 'GUSTARI', 'Poiana', 'G'),
+(21, 'suc pepsi', 'BAUTURI', 'Pepsi', 'L'),
+(22, 'biscuiti oreo', 'GUSTARI', 'Oreo', 'G'),
+(23, 'ceapa galbena', 'LEGUME_SI_FRUCTE', 'Generic', 'KG'),
+(24, 'cartofi albi', 'LEGUME_SI_FRUCTE', 'Generic', 'KG'),
+(25, 'file somon', 'PESTE', 'Lidl', 'KG'),
+(26, 'crema de branza', 'LACTATE', 'Almette', 'KG'),
+(27, 'malai extra', 'ALIMENTE_DE_BAZA', 'Pambac', 'KG'),
+(28, 'orez bob lung', 'ALIMENTE_DE_BAZA', 'Deroni', 'KG'),
+(29, 'pasta de dinti', 'INGRIJIRE_PERSONALA', 'Colgate', 'ML'),
+(30, 'morcovi', 'LEGUME_SI_FRUCTE', 'Generic', 'KG');
+
+-- stores data
+
+INSERT INTO stores (id, company_name) VALUES
+(1, 'Lidl'),
+(2, 'Profi'),
+(3, 'Kaufland');
+
+
+-- store items data
+
+
+-- for lidl
+
+INSERT INTO store_items (id, store_id, item_id, total_price, units, currency) VALUES
+(1, 1, 1, 9.90, 1, 'RON'),
+(2, 1, 2, 11.50, 0.4, 'RON'),
+(3, 1, 3, 13.20, 10, 'RON'),
+(4, 1, 4, 12.80, 0.3, 'RON'),
+(5, 1, 5, 3.50, 500, 'RON'),
+(6, 1, 6, 6.80, 250, 'RON'),
+(7, 1, 7, 28.50, 1, 'RON'),
+(8, 1, 8, 5.80, 500, 'RON'),
+(9, 1, 9, 4.40, 1, 'RON'),
+(10, 1, 10, 5.20, 2, 'RON'),
+(11, 1, 11, 6.10, 1, 'RON'),
+(12, 1, 12, 9.20, 1, 'RON'),
+(13, 1, 13, 7.10, 0.2, 'RON'),
+(14, 1, 14, 22.40, 0.25, 'RON'),
+(15, 1, 15, 49.90, 2.5, 'RON'),
+(16, 1, 16, 17.80, 400, 'RON'),
+(17, 1, 17, 18.90, 10, 'RON'),
+(18, 1, 18, 6.00, 50, 'RON'),
+(19, 1, 19, 23.50, 0.75, 'RON'),
+(20, 1, 20, 3.90, 100, 'RON'),
+(21, 1, 21, 13.99, 2.5, 'RON'),
+(22, 1, 22, 3.49, 1, 'RON'),
+(23, 1, 23, 2.95, 1, 'RON'),
+(24, 1, 24, 3.10, 1, 'RON'),
+(25, 1, 25, 25.00, 0.2, 'RON');
+
+
+-- for profi
+
+INSERT INTO store_items (id, store_id, item_id, total_price, units, currency) VALUES
+(26, 2, 1, 12.90, 1, 'RON'),
+(27, 2, 2, 11.50, 0.4, 'RON'),
+(28, 2, 3, 12.20, 10, 'RON'),
+(29, 2, 4, 13.10, 0.3, 'RON'),
+(30, 2, 5, 3.50, 500, 'RON'),
+(31, 2, 6, 8.80, 250, 'RON'),
+(32, 2, 7, 26.50, 1, 'RON'),
+(33, 2, 8, 5.80, 500, 'RON'),
+(34, 2, 9, 4.40, 1, 'RON'),
+(35, 2, 10, 5.20, 2, 'RON'),
+(36, 2, 11, 6.10, 1, 'RON'),
+(37, 2, 12, 9.20, 1, 'RON'),
+(38, 2, 13, 7.10, 0.2, 'RON'),
+(39, 2, 14, 22.40, 0.25, 'RON'),
+(40, 2, 15, 49.90, 2.5, 'RON'),
+(41, 2, 16, 17.80, 400, 'RON'),
+(42, 2, 17, 18.90, 10, 'RON'),
+(43, 2, 18, 6.00, 50, 'RON'),
+(44, 2, 19, 23.50, 0.75, 'RON'),
+(45, 2, 20, 3.90, 100, 'RON'),
+(46, 2, 21, 14.50, 2.5, 'RON');
+
+-- for kaufland
+
+INSERT INTO store_items (id, store_id, item_id, total_price, units, currency) VALUES
+(47, 3, 1, 10.10, 1, 'RON'),
+(48, 3, 2, 11.80, 0.4, 'RON'),
+(49, 3, 3, 13.50, 10, 'RON'),
+(50, 3, 4, 13.10, 0.3, 'RON'),
+(51, 3, 5, 3.60, 500, 'RON'),
+(52, 3, 6, 7.00, 250, 'RON'),
+(53, 3, 7, 27.90, 1, 'RON'),
+(54, 3, 8, 5.90, 500, 'RON'),
+(55, 3, 9, 4.50, 1, 'RON'),
+(56, 3, 10, 5.30, 2, 'RON'),
+(57, 3, 11, 6.20, 1, 'RON'),
+(58, 3, 12, 9.50, 1, 'RON'),
+(59, 3, 13, 7.50, 0.2, 'RON'),
+(60, 3, 14, 23.00, 0.25, 'RON'),
+(61, 3, 15, 50.50, 2.5, 'RON'),
+(62, 3, 16, 18.00, 400, 'RON'),
+(63, 3, 17, 19.20, 10, 'RON'),
+(64, 3, 18, 6.10, 50, 'RON'),
+(65, 3, 19, 24.00, 0.75, 'RON'),
+(66, 3, 20, 4.10, 100, 'RON'),
+(67, 3, 21, 13.99, 2.5, 'RON'),
+(68, 3, 22, 3.99, 1, 'RON'),
+(69, 3, 23, 3.10, 1, 'RON'),
+(70, 3, 24, 2.99, 1, 'RON'),
+(71, 3, 25, 24.50, 0.2, 'RON'),
+(72, 3, 26, 8.50, 0.15, 'RON'),
+(73, 3, 27, 5.50, 1, 'RON'),
+(74, 3, 28, 8.00, 1, 'RON'),
+(75, 3, 29, 10.50, 100, 'RON'),
+(76, 3, 30, 2.60, 0.5, 'RON');
+
+
+
+
+-- baskets data
+
+INSERT INTO baskets (id, user_id, store_id) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3);
+
+
+
+
+-- items for baskets
+
+
+-- lidl basket (basket_id = 1)
+INSERT INTO basket_items (id, basket_id, item_id, quantity, price_at_addition) VALUES
+(1, 1, 1, 1, 9.90),
+(2, 1, 2, 1, 11.50),
+(3, 1, 3, 1, 13.20),
+(4, 1, 4, 1, 12.80),
+(5, 1, 5, 1, 3.50);
+
+-- profi basket (basket_id = 2)
+INSERT INTO basket_items (id, basket_id, item_id, quantity, price_at_addition) VALUES
+(6, 2, 1, 1, 9.90),
+(7, 2, 3, 1, 13.20),
+(8, 2, 5, 1, 3.50),
+(9, 2, 7, 1, 28.50),
+(10, 2, 9, 1, 4.40),
+(11, 2, 11, 1, 6.10),
+(12, 2, 13, 1, 7.10);
+
+-- kaufland basket (basket_id = 3)
+INSERT INTO basket_items (id, basket_id, item_id, quantity, price_at_addition) VALUES
+(13, 3, 4, 1, 13.10),
+(14, 3, 5, 1, 3.60),
+(15, 3, 6, 1, 6.80),
+(16, 3, 7, 1, 27.90);
+
+
+
+
+-- item discounts
+
+INSERT INTO item_discounts (id, store_item_id, store_id, old_price, discount_percentage, start_date, end_date) VALUES
+(1, 19, 1, 23.50, 10, '2025-05-10 08:30:00.000000', '2025-05-17 08:30:00.000000'),
+(2, 20, 2, 3.90, 5, '2025-05-12 08:00:00.000000', '2025-05-19 08:30:00.000000'),
+(3, 19, 3, 24.00, 15, '2025-05-15 09:30:00.000000', '2025-05-22 09:30:00.000000');
+
+
+
+
+-- price alerts
+
+INSERT INTO price_alerts (id, user_id, store_item_id, target_price) VALUES
+(1, 1, 7, 25.00),
+(2, 1, 21, 12.50),
+(3, 1, 25, 22.00);
+
+
+
+-- spendings
+
+INSERT INTO spendings (id, user_id, store_id, total_price, purchase_date) VALUES
+(1, 1, 3, 58.19, '2025-05-01 11:37:26.000000');
+
+
+
+
+-- purchased items
+
+INSERT INTO purchased_items (id, spending_id, item_name, price_per_unit, units, unit_type) VALUES
+(1, 1, 'suc pepsi', 13.99, 1, 'L'),
+(2, 1, 'lapte zuzu', 10.10, 1, 'L'),
+(3, 1, 'piept pui', 27.90, 1, 'KG'),
+(4, 1, 'banane', 6.20, 1, 'KG');
+

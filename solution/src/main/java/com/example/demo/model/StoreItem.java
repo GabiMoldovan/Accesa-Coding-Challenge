@@ -29,8 +29,8 @@ public class StoreItem {
     private Item item;
 
     @Column(nullable = false)
-    @Schema(description = "the price per unit of the item")
-    private float pricePerUnit;
+    @Schema(description = "the total price of the item in the specific store")
+    private float totalPrice;
 
     @Column(nullable = false)
     @Schema(description = "the number of units that the package contains")
@@ -43,6 +43,6 @@ public class StoreItem {
 
     @Transient
     public float getTotalPrice() {
-        return pricePerUnit * units;
+        return totalPrice;
     }
 }

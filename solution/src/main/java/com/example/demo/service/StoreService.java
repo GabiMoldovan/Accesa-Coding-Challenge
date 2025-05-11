@@ -45,7 +45,6 @@ public class StoreService {
                     StoreItem storeItem = new StoreItem();
                     storeItem.setStore(savedStore);
                     storeItem.setItem(item);
-                    storeItem.setPricePerUnit(itemReq.pricePerUnit());
                     storeItem.setUnits(itemReq.units());
                     storeItem.setCurrency(itemReq.currency());
                     return storeItemRepository.save(storeItem);
@@ -114,10 +113,9 @@ public class StoreService {
                 storeItem.getId(),
                 storeItem.getStore().getId(),
                 storeItem.getItem().getId(),
-                storeItem.getPricePerUnit(),
+                storeItem.getTotalPrice(),
                 storeItem.getUnits(),
-                storeItem.getCurrency(),
-                storeItem.getTotalPrice()
+                storeItem.getCurrency()
         );
     }
 

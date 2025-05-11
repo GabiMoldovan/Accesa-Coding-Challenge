@@ -14,25 +14,22 @@ public record StoreItemResponse(
         @Schema(description = "The product ID")
         Long itemId,
 
-        @Schema(description = "The price per unit of the product")
-        float pricePerUnit,
+        @Schema(description = "The total price of the product")
+        float totalPrice,
 
         @Schema(description = "The number of units contained in the package")
         float units,
 
         @Schema(description = "The currency in which the product is sold")
-        Currency currency,
+        Currency currency
 
-        @Schema(description = "The total price of the product")
-        float totalPrice
 ) {
-    public StoreItemResponse(Long storeItemId, Long storeId, Long itemId, float pricePerUnit, float units, Currency currency, float totalPrice) {
+    public StoreItemResponse(Long storeItemId, Long storeId, Long itemId, float totalPrice, float units, Currency currency) {
         this.storeItemId = storeItemId;
         this.storeId = storeId;
         this.itemId = itemId;
-        this.pricePerUnit = pricePerUnit;
+        this.totalPrice = totalPrice;
         this.units = units;
         this.currency = currency;
-        this.totalPrice = totalPrice;
     }
 }

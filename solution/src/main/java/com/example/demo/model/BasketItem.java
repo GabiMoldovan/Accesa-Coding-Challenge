@@ -37,6 +37,6 @@ public class BasketItem {
     public BasketItem(StoreItem storeItem, float quantity) {
         this.storeItem = storeItem;
         this.quantity = quantity;
-        this.priceAtAddition = storeItem.getPricePerUnit();
+        this.priceAtAddition = storeItem.getTotalPrice();
     }
 }

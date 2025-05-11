@@ -15,10 +15,11 @@ public record StoreItemRequest(
         @NotNull(message = "Item ID cannot be null")
         Long itemId,
 
-        @Schema(description = "The price per unit of the product")
-        @NotNull(message = "Price per unit cannot be null")
-        @Positive(message = "Price per unit must be positive")
-        float pricePerUnit,
+        @Schema(description = "the total price of a product")
+        @NotNull(message = "Price cannot be null")
+        @Positive(message = "Price must be positive")
+        float totalPrice,
+
 
         @Schema(description = "The number of units contained in the package")
         @NotNull(message = "Units cannot be null")
@@ -29,10 +30,10 @@ public record StoreItemRequest(
         @NotNull(message = "Currency cannot be null")
         Currency currency
 ) {
-    public StoreItemRequest(Long storeId, Long itemId, float pricePerUnit, float units, Currency currency) {
+    public StoreItemRequest(Long storeId, Long itemId,float totalPrice, float units, Currency currency) {
         this.storeId = storeId;
         this.itemId = itemId;
-        this.pricePerUnit = pricePerUnit;
+        this.totalPrice = totalPrice;
         this.units = units;
         this.currency = currency;
     }

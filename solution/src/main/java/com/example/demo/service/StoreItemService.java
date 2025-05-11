@@ -39,7 +39,7 @@ public class StoreItemService {
         StoreItem storeItem = new StoreItem();
         storeItem.setStore(store);
         storeItem.setItem(item);
-        storeItem.setPricePerUnit(request.pricePerUnit());
+        storeItem.setTotalPrice(request.totalPrice());
         storeItem.setUnits(request.units());
         storeItem.setCurrency(request.currency());
 
@@ -63,8 +63,7 @@ public class StoreItemService {
     public StoreItemResponse updateStoreItem(Long id, StoreItemRequest request) {
         StoreItem storeItem = storeItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("StoreItem not found"));
-
-        storeItem.setPricePerUnit(request.pricePerUnit());
+        storeItem.setTotalPrice(request.totalPrice());
         storeItem.setUnits(request.units());
         storeItem.setCurrency(request.currency());
 
@@ -81,10 +80,9 @@ public class StoreItemService {
                 storeItem.getId(),
                 storeItem.getStore().getId(),
                 storeItem.getItem().getId(),
-                storeItem.getPricePerUnit(),
+                storeItem.getTotalPrice(),
                 storeItem.getUnits(),
-                storeItem.getCurrency(),
-                storeItem.getTotalPrice()
+                storeItem.getCurrency()
         );
     }
 }

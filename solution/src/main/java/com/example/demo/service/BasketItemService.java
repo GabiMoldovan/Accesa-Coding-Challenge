@@ -37,7 +37,7 @@ public class BasketItemService {
         basketItem.setBasket(basket);
         basketItem.setStoreItem(storeItem);
         basketItem.setQuantity(request.quantity());
-        basketItem.setPriceAtAddition(storeItem.getPricePerUnit());
+        basketItem.setPriceAtAddition(storeItem.getTotalPrice());
 
         BasketItem savedItem = basketItemRepository.save(basketItem);
         return convertToResponse(savedItem);

@@ -14,10 +14,9 @@ public class StoreItemMapper {
                 storeItem.getId(),
                 storeItem.getStore().getId(),
                 storeItem.getItem().getId(),
-                storeItem.getPricePerUnit(),
+                storeItem.getTotalPrice(),
                 storeItem.getUnits(),
-                storeItem.getCurrency(),
-                storeItem.getTotalPrice()
+                storeItem.getCurrency()
         );
     }
 

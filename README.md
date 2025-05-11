@@ -19,7 +19,19 @@ Also change the name of the database if you didn't name it AccesaInternship
 Click on New, Data Source, then select PostGreSQL. Put your user, password, and the name of the databse.
 Or you can view it in pgAdmin
 
+6. Use Postman to create a user.
 
+POST http://localhost:8080/signup
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "",
+  "email": "",
+  "password": ""
+}
+
+7. Use the dummy_data_injection_script.sql to inject some data into the data base to populate it.
 
 
 
@@ -71,3 +83,13 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 2. Created the files for the rest of the Services
 
 3. Began working on a diagram for the functionalities of the services
+
+4. Finished the services with the CRUD operations
+
+5. I added the user and auth controllers
+
+6. I created a sql script to inject the dummy data that populates the data base
+
+7. I used Postman to create the testing user
+
+8. I inserted the data into the data base from the sql script (PLEASE CHECK THE "data for the data base folder")

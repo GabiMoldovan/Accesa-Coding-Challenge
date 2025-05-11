@@ -106,4 +106,18 @@ public class UserService {
         return user.getPriceAlerts();
     }
 
+    public UserResponse findResponseByEmail(String email) {
+        return UserMapper.entityToDto(findByEmail(email));
+    }
+
+    public UserResponse findResponseById(Long userId) {
+        return UserMapper.entityToDto(findById(userId));
+    }
+
+    public List<User> getAllUsers() {return userRepository.findAll();}
+
+    public List<UserResponse> getAllUserResponses() {
+        return UserMapper.entityListToDto(getAllUsers());
+    }
+
 }
