@@ -1,4 +1,4 @@
-users, items, store, store items, baskets, basket_items, item_discounts, price_alerts, price_history, purchased_items, spendings
+TABELS: users, items, store, store items, baskets, basket_items, item_discounts, price_alerts, price_history, purchased_items, spendings
 
 
 
@@ -336,8 +336,8 @@ purchased_items
 id;spending_id;item_name;price_per_unit;units;unit_type
 
 1;1;suc pepsi;13.99;1;L
-2;1;lapte zuzu;10.10;L
-3;1;piept pui;27.90;KG
-4;1;banane;6.20;KG
+2;1;lapte zuzu;10.10;1;L
+3;1;piept pui;27.90;1kKG
+4;1;banane;6.20;1kKG
 
 ==============================================================================>

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,7 @@ public class Basket {
 
     @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL, orphanRemoval = true)
     @Schema(description = "items in the basket")
-    private List<BasketItem> items;
+    private List<BasketItem> items = new ArrayList<>();
 
     public void addItem(BasketItem item) {
         item.setBasket(this);

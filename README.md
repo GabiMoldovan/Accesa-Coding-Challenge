@@ -93,3 +93,5 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 12.05.2025
 
 1. I created the controllers for CRUD operations on all entities and I also tested them using Postman
+
+2. I created a data base initializer
