@@ -20,13 +20,16 @@ public class StoreItemService {
     private final StoreItemRepo storeItemRepository;
     private final StoreRepo storeRepository;
     private final ItemRepo itemRepository;
+    private final PriceHistoryService priceHistoryService;
 
     public StoreItemService(StoreItemRepo storeItemRepository,
                             StoreRepo storeRepository,
-                            ItemRepo itemRepository) {
+                            ItemRepo itemRepository,
+                            PriceHistoryService priceHistoryService) {
         this.storeItemRepository = storeItemRepository;
         this.storeRepository = storeRepository;
         this.itemRepository = itemRepository;
+        this.priceHistoryService = priceHistoryService;
     }
 
     @Transactional
@@ -63,11 +66,26 @@ public class StoreItemService {
     public StoreItemResponse updateStoreItem(Long id, StoreItemRequest request) {
         StoreItem storeItem = storeItemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("StoreItem not found"));
+
+        // saving the old price to compare it to the patched store item
+        float oldPrice = storeItem.getTotalPrice();
+        float newPrice = request.totalPrice();
+
+        // register the price history entry if the price changed
+        if (oldPrice != newPrice) {
+            priceHistoryService.recordPriceChange(
+                    storeItem.getItem().getId(),
+                    storeItem.getStore().getId(),
+                    newPrice
+            );
+        }
+
         storeItem.setTotalPrice(request.totalPrice());
         storeItem.setUnits(request.units());
         storeItem.setCurrency(request.currency());
 
-        return convertToResponse(storeItemRepository.save(storeItem));
+        StoreItem updatedItem = storeItemRepository.save(storeItem);
+        return convertToResponse(updatedItem);
     }
 
     @Transactional
