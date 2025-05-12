@@ -2,17 +2,25 @@ package com.example.demo.service;
 
 import com.example.demo.dto.item.ItemRequest;
 import com.example.demo.dto.item.ItemResponse;
+import com.example.demo.dto.itemPatchRequest.ItemPatchRequest;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.Item;
+import com.example.demo.model.StoreItem;
 import com.example.demo.repository.ItemRepo;
+import com.example.demo.repository.StoreItemRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ItemService {
     private final ItemRepo itemRepository;
+    private final StoreItemRepo storeItemRepo;
 
-    public ItemService(ItemRepo itemRepository) {
+    public ItemService(ItemRepo itemRepository, StoreItemRepo storeItemRepo) {
         this.itemRepository = itemRepository;
+        this.storeItemRepo = storeItemRepo;
     }
 
     public ItemResponse createItem(ItemRequest request) {
@@ -40,4 +48,43 @@ public class ItemService {
                 item.getUnitType()
         );
     }
+
+    @Transactional
+    public ItemResponse updateItemPrice(Long itemId, Long storeId, float newPrice) {
+        StoreItem storeItem = storeItemRepo.findByItemIdAndStoreId(itemId, storeId)
+                .orElseThrow(() -> new NotFoundException("Store item not found"));
+
+        storeItem.setTotalPrice(newPrice);
+        storeItemRepo.save(storeItem);
+
+        return convertToResponse(storeItem.getItem());
+    }
+
+    @Transactional
+    public ItemResponse updateItem(Long id, ItemPatchRequest request) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Item not found"));
+
+        if (request.itemName() != null) item.setItemName(request.itemName());
+        if (request.category() != null) item.setCategory(request.category());
+        if (request.brand() != null) item.setBrand(request.brand());
+        if (request.unitType() != null) item.setUnitType(request.unitType());
+
+        return convertToResponse(itemRepository.save(item));
+    }
+
+    public ItemResponse deleteItem(Long id) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Item not found"));
+
+        itemRepository.delete(item);
+        return convertToResponse(item);
+    }
+
+    public List<ItemResponse> getAllItems() {
+        return itemRepository.findAll().stream()
+                .map(this::convertToResponse)
+                .toList();
+    }
+
 }

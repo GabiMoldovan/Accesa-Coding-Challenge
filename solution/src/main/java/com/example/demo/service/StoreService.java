@@ -140,4 +140,31 @@ public class StoreService {
                 history.getPrice()
         );
     }
+
+    public StoreResponse getStoreById(Long id) {
+        Store store = storeRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Store not found"));
+        return convertToResponse(store);
+    }
+
+    @Transactional
+    public StoreResponse updateStore(Long id, String companyName) {
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Store not found"));
+
+        store.setCompanyName(companyName);
+        Store updatedStore = storeRepository.save(store);
+
+        return convertToResponse(updatedStore);
+    }
+
+    @Transactional
+    public StoreResponse deleteStore(Long id) {
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Store not found"));
+
+        storeRepository.delete(store);
+        return convertToResponse(store);
+    }
+
 }

@@ -57,7 +57,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 
 4. I added the database
 
-5. Managed to make all the configurations necessary for implementing the project
+5. Managed to make all the configurations necessary for implementing the project (also added swagger and lombok)
 
 
 10.05.2025:
@@ -82,14 +82,14 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 
 2. Created the files for the rest of the Services
 
-3. Began working on a diagram for the functionalities of the services
+3. Finished the services with the CRUD operations
 
-4. Finished the services with the CRUD operations
+4. I added the user and auth controllers
 
-5. I added the user and auth controllers
+5. I created a dummy data txt file that I will later use to insert it into the app
 
-6. I created a sql script to inject the dummy data that populates the data base
+6. I used Postman to create the testing user
 
-7. I used Postman to create the testing user
+12.05.2025
 
-8. I inserted the data into the data base from the sql script (PLEASE CHECK THE "data for the data base folder")
+1. I created the controllers for CRUD operations on all entities and I also tested them using Postman

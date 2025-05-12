@@ -71,9 +71,14 @@ public class StoreItemService {
     }
 
     @Transactional
-    public void deleteStoreItem(Long id) {
-        storeItemRepository.deleteById(id);
+    public StoreItemResponse deleteStoreItem(Long id) {
+        StoreItem storeItem = storeItemRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("StoreItem not found"));
+
+        storeItemRepository.delete(storeItem);
+        return convertToResponse(storeItem);
     }
+
 
     private StoreItemResponse convertToResponse(StoreItem storeItem) {
         return new StoreItemResponse(

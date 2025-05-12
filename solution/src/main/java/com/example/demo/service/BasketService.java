@@ -10,7 +10,9 @@ import com.example.demo.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,4 +87,46 @@ public class BasketService {
                 item.getPriceAtAddition()
         );
     }
+
+    public Optional<Basket> findByUserIdAndStoreId(Long userId, Long storeId) {
+        return basketRepository.findByUserIdAndStoreId(userId, storeId);
+    }
+
+    public Basket createBasketEntity(BasketRequest request) {
+        User user = userRepository.findById(request.userId())
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + request.userId()));
+
+        Store store = storeRepository.findById(request.storeId())
+                .orElseThrow(() -> new NotFoundException("Store not found with id: " + request.storeId()));
+
+        Basket basket = new Basket();
+        basket.setUser(user);
+        basket.setStore(store);
+        basket.setItems(new ArrayList<>());
+
+        // Save the basket first to generate ID
+        Basket savedBasket = basketRepository.save(basket);
+
+        // Process items
+        for (BasketItemRequest itemRequest : request.items()) {
+            StoreItem storeItem = storeItemRepository.findById(itemRequest.storeItemId())
+                    .orElseThrow(() -> new NotFoundException("StoreItem not found with id: " + itemRequest.storeItemId()));
+
+            BasketItem basketItem = new BasketItem();
+            basketItem.setBasket(savedBasket);
+            basketItem.setStoreItem(storeItem);
+            basketItem.setQuantity(itemRequest.quantity());
+            basketItem.setPriceAtAddition(storeItem.getTotalPrice());
+
+            savedBasket.getItems().add(basketItem);
+        }
+
+        return basketRepository.save(savedBasket);
+    }
+
+    public Basket getBasketEntityById(Long basketId) {
+        return basketRepository.findById(basketId)
+                .orElseThrow(() -> new NotFoundException("Basket not found with id: " + basketId));
+    }
+
 }

@@ -81,7 +81,8 @@ public class UserController {
 
 
 
-
+    // this endpoint is made only for testing purposes, I don't think that it is a good practice
+    // to create an endpoint that returns the whole user
     @Operation(summary = "Get user with specified id", description = "This endpoint is used to retrieve a user with " +
             "specified id.")
     @ApiResponses(value = {

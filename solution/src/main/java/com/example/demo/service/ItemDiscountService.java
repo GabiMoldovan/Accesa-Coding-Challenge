@@ -9,6 +9,10 @@ import com.example.demo.model.StoreItem;
 import com.example.demo.repository.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ItemDiscountService {
     private final ItemDiscountRepo discountRepository;
@@ -40,6 +44,35 @@ public class ItemDiscountService {
         return convertToResponse(savedDiscount);
     }
 
+    public ItemDiscountResponse updateDiscount(Long id, ItemDiscountRequest request) {
+        ItemDiscount discount = discountRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Discount not found"));
+
+        StoreItem storeItem = storeItemRepository.findById(request.storeItemId())
+                .orElseThrow(() -> new NotFoundException("StoreItem not found"));
+
+        Store store = storeRepository.findById(request.storeId())
+                .orElseThrow(() -> new NotFoundException("Store not found"));
+
+        discount.setStoreItem(storeItem);
+        discount.setStore(store);
+        discount.setOldPrice(request.oldPrice());
+        discount.setDiscountPercentage(request.discountPercentage());
+        discount.setStartDate(request.startDate());
+        discount.setEndDate(request.endDate());
+
+        return convertToResponse(discountRepository.save(discount));
+    }
+
+    public ItemDiscountResponse deleteDiscount(Long id) {
+        ItemDiscount discount = discountRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Discount not found"));
+
+        discountRepository.delete(discount);
+        return convertToResponse(discount);
+    }
+
+
     private ItemDiscountResponse convertToResponse(ItemDiscount discount) {
         return new ItemDiscountResponse(
                 discount.getId(),
@@ -51,4 +84,30 @@ public class ItemDiscountService {
                 discount.getEndDate()
         );
     }
+
+    public List<ItemDiscountResponse> getActiveDiscounts(LocalDateTime date) {
+        return discountRepository
+                .findByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<ItemDiscountResponse> getTopDiscounts(int limit) {
+        return discountRepository
+                .findAllByOrderByDiscountPercentageDesc()
+                .stream()
+                .limit(limit)
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<ItemDiscountResponse> getDiscountsForItem(Long itemId) {
+        List<ItemDiscount> discounts = discountRepository.findAllByStoreItem_Item_Id(itemId);
+        return discounts.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
 }

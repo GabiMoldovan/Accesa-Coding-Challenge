@@ -7,7 +7,12 @@ import com.example.demo.model.PriceHistory;
 import com.example.demo.model.Store;
 import com.example.demo.model.StoreItem;
 import com.example.demo.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PriceHistoryService {
@@ -46,5 +51,28 @@ public class PriceHistoryService {
                 history.getDate(),
                 history.getPrice()
         );
+    }
+
+    public List<PriceHistoryResponse> getFilteredPriceHistory(Long itemId, Long storeId,
+                                                              LocalDateTime startDate,
+                                                              LocalDateTime endDate) {
+        return historyRepository.findFiltered(itemId, storeId, startDate, endDate)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void recordPriceChange(Long itemId, Long storeId, float newPrice) {
+        StoreItem storeItem = storeItemRepository.findByItemIdAndStoreId(itemId, storeId)
+                .orElseThrow(() -> new NotFoundException("StoreItem not found for item: " + itemId + " and store: " + storeId));
+
+        PriceHistory history = new PriceHistory();
+        history.setStoreItem(storeItem);
+        history.setStore(storeItem.getStore());
+        history.setDate(LocalDateTime.now());
+        history.setPrice(newPrice);
+
+        historyRepository.save(history);
     }
 }
