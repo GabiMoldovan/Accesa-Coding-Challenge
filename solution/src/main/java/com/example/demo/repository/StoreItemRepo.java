@@ -13,4 +13,7 @@ public interface StoreItemRepo extends JpaRepository<StoreItem, Long> {
 
     @Query("SELECT si FROM StoreItem si WHERE si.item.id = :itemId AND si.store.id = :storeId")
     Optional<StoreItem> findByItemIdAndStoreId(@Param("itemId") Long itemId, @Param("storeId") Long storeId);
+
+    @Query("SELECT si FROM StoreItem si WHERE si.item.id = :itemId")
+    List<StoreItem> findByItemId(@Param("itemId") Long itemId);
 }

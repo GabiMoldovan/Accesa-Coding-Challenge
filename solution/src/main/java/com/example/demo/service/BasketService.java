@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,13 +22,16 @@ public class BasketService {
     private final UserRepo userRepository;
     private final StoreRepo storeRepository;
     private final StoreItemRepo storeItemRepository;
+    private final BasketItemRepo basketItemRepository;
 
     public BasketService(BasketRepo basketRepository, UserRepo userRepository,
-                         StoreRepo storeRepository, StoreItemRepo storeItemRepository) {
+                         StoreRepo storeRepository, StoreItemRepo storeItemRepository,
+                         BasketItemRepo basketItemRepository) {
         this.basketRepository = basketRepository;
         this.userRepository = userRepository;
         this.storeRepository = storeRepository;
         this.storeItemRepository = storeItemRepository;
+        this.basketItemRepository = basketItemRepository;
     }
 
     @Transactional
@@ -127,6 +131,75 @@ public class BasketService {
     public Basket getBasketEntityById(Long basketId) {
         return basketRepository.findById(basketId)
                 .orElseThrow(() -> new NotFoundException("Basket not found with id: " + basketId));
+    }
+
+
+    @Transactional
+    public List<BasketResponse> optimizeBaskets(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        List<Basket> userBaskets = basketRepository.findByUserId(userId);
+
+        // Collecting all the items from all the baskets
+        List<BasketItem> allItems = userBaskets.stream()
+                .flatMap(b -> b.getItems().stream())
+                .collect(Collectors.toList());
+
+        for (BasketItem item : allItems) {
+            Item itemEntity = item.getStoreItem().getItem();
+            List<StoreItem> allStoreItems = storeItemRepository.findByItemId(itemEntity.getId());
+
+            if (allStoreItems.isEmpty()) continue;
+
+            // Finding the cheapest StoreItem throughout all the stores
+            StoreItem cheapestStoreItem = allStoreItems.stream()
+                    .min(Comparator.comparing(StoreItem::getTotalPrice))
+                    .orElseThrow();
+
+            if (cheapestStoreItem.getStore().getId().equals(item.getBasket().getStore().getId())) {
+                continue;
+            }
+
+            // Finding the basket or creating the basket for the store with the minimum price
+            Long targetStoreId = cheapestStoreItem.getStore().getId();
+            Basket targetBasket = basketRepository.findByUserIdAndStoreId(userId, targetStoreId)
+                    .orElseGet(() -> {
+                        Basket newBasket = new Basket();
+                        newBasket.setUser(user);
+                        newBasket.setStore(cheapestStoreItem.getStore());
+                        return basketRepository.save(newBasket);
+                    });
+
+            // Moving or updating the item in the new basket
+            Optional<BasketItem> existingItem = targetBasket.getItems().stream()
+                    .filter(i -> i.getStoreItem().getId().equals(cheapestStoreItem.getId()))
+                    .findFirst();
+
+            if (existingItem.isPresent()) {
+                // Updating the quantity if necessary
+                BasketItem existing = existingItem.get();
+                existing.setQuantity(existing.getQuantity() + item.getQuantity());
+                existing.setPriceAtAddition(cheapestStoreItem.getTotalPrice());
+                basketItemRepository.save(existing);
+            } else {
+                // If quantity = 0 => we create the new BasketItem
+                BasketItem newItem = new BasketItem(cheapestStoreItem, item.getQuantity());
+                newItem.setBasket(targetBasket);
+                basketItemRepository.save(newItem);
+                targetBasket.getItems().add(newItem);
+            }
+
+            // And we delete the BasketItem from the old basket
+            Basket originalBasket = item.getBasket();
+            originalBasket.getItems().remove(item);
+            basketItemRepository.delete(item);
+            basketRepository.save(originalBasket);
+        }
+
+        return basketRepository.findByUserId(userId).stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
 
 }
