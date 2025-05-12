@@ -47,6 +47,14 @@ public class StoreItemService {
         storeItem.setCurrency(request.currency());
 
         StoreItem savedItem = storeItemRepository.save(storeItem);
+
+        // Register the price as well in the price history when the store item is created
+        priceHistoryService.recordPriceChange(
+                item.getId(),
+                store.getId(),
+                request.totalPrice()
+        );
+
         return convertToResponse(savedItem);
     }
 
