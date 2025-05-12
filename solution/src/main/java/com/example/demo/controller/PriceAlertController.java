@@ -29,7 +29,8 @@ public class PriceAlertController {
         this.priceAlertService = priceAlertService;
     }
 
-    @Operation(summary = "Create a price alert", description = "Creates a new price alert for a user on a specific item.")
+    @Operation(summary = "Create a price alert", description = "Creates a new price alert for a user on a " +
+            "specific item.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Price alert created successfully",
                     content = @Content(mediaType = "application/json",
@@ -47,7 +48,8 @@ public class PriceAlertController {
     }
 
 
-    @Operation(summary = "Update a price alert", description = "Updates the target price for an existing price alert.")
+    @Operation(summary = "Update a price alert", description = "Updates the target price for an existing " +
+            "price alert.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Price alert updated successfully",
                     content = @Content(mediaType = "application/json",

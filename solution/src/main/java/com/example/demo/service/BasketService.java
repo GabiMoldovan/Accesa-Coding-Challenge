@@ -62,6 +62,17 @@ public class BasketService {
         return convertToResponse(basket);
     }
 
+    public List<BasketResponse> getBasketsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        List<Basket> baskets = basketRepository.findByUserId(userId);
+        return baskets.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+
     @Transactional
     public void deleteBasket(Long id) {
         Basket basket = basketRepository.findById(id)

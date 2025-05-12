@@ -30,7 +30,8 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @Operation(summary = "Create a new item", description = "This endpoint is used to create a new item with specified details.")
+    @Operation(summary = "Create a new item", description = "This endpoint is used to create a new item with " +
+            "specified details.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Item created successfully",
                     content = @Content(mediaType = "application/json",

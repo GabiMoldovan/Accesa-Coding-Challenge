@@ -7,7 +7,6 @@ import com.example.demo.dto.spending.SpendingRequest;
 import com.example.demo.dto.spending.SpendingResponse;
 import com.example.demo.model.Basket;
 import com.example.demo.model.BasketItem;
-import com.example.demo.model.User;
 import com.example.demo.service.BasketService;
 import com.example.demo.service.SpendingService;
 import com.example.demo.service.UserService;
@@ -44,7 +43,25 @@ public class BasketController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Checkout the basket", description = "This endpoint allows a user to checkout the items in their basket and create a spending record.")
+
+    @Operation(summary = "Get all baskets of a user", description = "Returns all baskets belonging to the specified user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of baskets",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BasketResponse.class, type = "array"))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<List<BasketResponse>> getUserBaskets(@PathVariable Long userId) {
+        List<BasketResponse> baskets = basketService.getBasketsByUserId(userId);
+        return ResponseEntity.ok(baskets);
+    }
+
+
+    @Operation(summary = "Checkout the basket", description = "This endpoint allows a user to checkout the items in " +
+            "their basket and create a spending record.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Checkout successful, spending created",
                     content = @Content(mediaType = "application/json",
@@ -109,7 +126,8 @@ public class BasketController {
 
     @PostMapping(value = "/users/{userId}/optimize", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    @Operation(summary = "Optimize baskets", description = "Reorganize baskets to contain items at their cheapest available price across all stores")
+    @Operation(summary = "Optimize baskets", description = "Reorganize baskets to contain items at their cheapest " +
+            "available price across all stores")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Baskets optimized successfully",
                     content = @Content(mediaType = "application/json",

@@ -31,7 +31,8 @@ public class PriceHistoryController {
 
     @Operation(
             summary = "Get price history for a product",
-            description = "Returns a list of price history entries for a specific store item, optionally filtered by storeId, startDate and endDate."
+            description = "Returns a list of price history entries for a specific store item, optionally filtered by " +
+                    "storeId, startDate and endDate."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Price history retrieved successfully",

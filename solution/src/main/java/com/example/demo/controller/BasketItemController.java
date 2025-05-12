@@ -38,7 +38,8 @@ public class BasketItemController {
     }
 
 
-    @Operation(summary = "Add an item to the user's basket", description = "This endpoint allows a user to add an item to their basket. A new basket will be created if none exists.")
+    @Operation(summary = "Add an item to the user's basket", description = "This endpoint allows a user to add an " +
+            "item to their basket. A new basket will be created if none exists.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Item successfully added to the basket",
                     content = @Content(mediaType = "application/json",
@@ -74,7 +75,8 @@ public class BasketItemController {
     }
 
 
-    @Operation(summary = "Get basket item by ID", description = "This endpoint allows fetching the details of a specific basket item by its ID.")
+    @Operation(summary = "Get basket item by ID", description = "This endpoint allows fetching the details " +
+            "of a specific basket item by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Basket item retrieved successfully",
                     content = @Content(mediaType = "application/json",
@@ -92,7 +94,8 @@ public class BasketItemController {
     }
 
 
-    @Operation(summary = "Delete a basket item", description = "This endpoint allows deleting an item from the basket by its ID.")
+    @Operation(summary = "Delete a basket item", description = "This endpoint allows deleting an item from the " +
+            "basket by its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Basket item deleted successfully",
                     content = @Content(mediaType = "application/json",
@@ -112,7 +115,8 @@ public class BasketItemController {
     }
 
 
-    @Operation(summary = "Update the quantity of a basket item", description = "This endpoint allows updating the quantity of an existing item in the basket.")
+    @Operation(summary = "Update the quantity of a basket item", description = "This endpoint allows updating the " +
+            "quantity of an existing item in the basket.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Basket item quantity updated successfully",
                     content = @Content(mediaType = "application/json",
