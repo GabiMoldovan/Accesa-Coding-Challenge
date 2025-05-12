@@ -128,7 +128,7 @@ It has all the progress throughout each day.
 # Progress Tracking:
 
 
-09.05.2025:
+# 09.05.2025:
 1. Created the Spring Boot project using Spring Initializr.
 I added the following dependencies: DevTools, Spring Web, Spring Data JPA, Spring Security, PostGreSQL Driver.
 
@@ -146,7 +146,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 5. Managed to make all the configurations necessary for implementing the project (also added swagger and lombok)
 
 
-10.05.2025:
+# 10.05.2025:
 
 1. Added all the model entities
 
@@ -162,7 +162,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 
 7. I created the UserService and AuthService
 
-11.05.2025:
+# 11.05.2025:
 
 1. Added the login/register logic with crypted passwords
 
@@ -176,7 +176,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 
 6. I used Postman to create the testing user
 
-12.05.2025
+# 12.05.2025
 
 1. I created the controllers for CRUD operations on all entities and I also tested them using Postman
 
@@ -184,6 +184,6 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 
 3. I added the solution for the first requirement
 
-13.02.2025
+# 13.02.2025
 
 1. I added the solution to the second requirement
