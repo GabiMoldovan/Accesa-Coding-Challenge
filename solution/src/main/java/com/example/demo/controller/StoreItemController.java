@@ -14,6 +14,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/store-item")
 public class StoreItemController {
@@ -88,6 +90,18 @@ public class StoreItemController {
         return ResponseEntity.ok(deletedItem);
     }
 
+    @Operation(summary = "Get all store items by store ID", description = "Retrieve a list of all store items for a specific store.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of store items retrieved successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = StoreItemResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Store not found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/store/{storeId}")
+    public ResponseEntity<List<StoreItemResponse>> getAllStoreItemsByStoreId(@PathVariable Long storeId) {
+        List<StoreItemResponse> storeItems = storeItemService.getAllByStoreId(storeId);
+        return ResponseEntity.ok(storeItems);
+    }
 
 
 }
