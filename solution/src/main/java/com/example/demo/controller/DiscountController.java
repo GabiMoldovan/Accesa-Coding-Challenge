@@ -15,7 +15,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/discounts")
@@ -98,7 +101,7 @@ public class DiscountController {
         return ResponseEntity.ok(discountService.getActiveDiscounts(LocalDateTime.now()));
     }
 
-    @Operation(summary = "Get top discounts", description = "Fetches the top discounts based on the specified count.")
+    @Operation(summary = "Get top best percentage discounts", description = "Fetches the top discounts based on the specified count.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Top discounts retrieved successfully",
                     content = @Content(mediaType = "application/json",
@@ -107,7 +110,7 @@ public class DiscountController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseDto.class)))
     })
-    @GetMapping("/best")
+    @GetMapping("/best-percentage-discounts")
     public ResponseEntity<List<ItemDiscountResponse>> getBestDiscounts(
             @RequestParam(defaultValue = "25") int count) {
         return ResponseEntity.ok(discountService.getTopDiscounts(count));
@@ -128,6 +131,33 @@ public class DiscountController {
     @GetMapping("/by-item")
     public ResponseEntity<List<ItemDiscountResponse>> getDiscountsForItem(@RequestParam Long itemId) {
         return ResponseEntity.ok(discountService.getDiscountsForItem(itemId));
+    }
+
+
+    @Operation(summary = "Get maximum discount per item", description = "Fetches the maximum discount percentage for each item across all stores, considering active discounts.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Maximum discounts per item retrieved successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ItemDiscountResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/all-items-discounts-with-max-discount-per-item")
+    public ResponseEntity<List<ItemDiscountResponse>> getMaxDiscountPerItem() {
+        LocalDateTime now = LocalDateTime.now();
+        List<ItemDiscountResponse> activeDiscounts = discountService.getActiveDiscountsWithUniqueItems(now);
+
+        Map<Long, ItemDiscountResponse> maxDiscountMap = new HashMap<>();
+        for (ItemDiscountResponse discount : activeDiscounts) {
+            Long itemId = discount.itemId();
+            maxDiscountMap.merge(itemId, discount, (existing, current) ->
+                    current.discountPercentage() > existing.discountPercentage() ? current : existing
+            );
+        }
+
+        List<ItemDiscountResponse> result = new ArrayList<>(maxDiscountMap.values());
+        return ResponseEntity.ok(result);
     }
 
 }

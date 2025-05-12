@@ -25,9 +25,14 @@ public record ItemDiscountResponse(
         LocalDateTime startDate,
 
         @Schema(description = "The end date of the discount")
-        LocalDateTime endDate
+        LocalDateTime endDate,
+
+        @Schema(description = "The ID of the item")
+                Long itemId
 ) {
-    public ItemDiscountResponse(Long itemDiscountId, Long storeItemId, Long storeId, float oldPrice, float discountPercentage, LocalDateTime startDate, LocalDateTime endDate) {
+    public ItemDiscountResponse(Long itemDiscountId, Long storeItemId, Long storeId,
+                                float oldPrice, float discountPercentage, LocalDateTime startDate,
+                                LocalDateTime endDate, Long itemId) {
         this.itemDiscountId = itemDiscountId;
         this.storeItemId = storeItemId;
         this.storeId = storeId;
@@ -35,5 +40,6 @@ public record ItemDiscountResponse(
         this.discountPercentage = discountPercentage;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.itemId = itemId;
     }
 }

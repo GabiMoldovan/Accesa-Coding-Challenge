@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 @Component
 public class ItemDiscountMapper {
     public static ItemDiscountResponse entityToDto(ItemDiscount itemDiscount) {
+        Long itemId = itemDiscount.getStoreItem().getItem().getId();
         return new ItemDiscountResponse(
                 itemDiscount.getId(),
                 itemDiscount.getStoreItem().getId(),
@@ -17,7 +18,8 @@ public class ItemDiscountMapper {
                 itemDiscount.getOldPrice(),
                 itemDiscount.getDiscountPercentage(),
                 itemDiscount.getStartDate(),
-                itemDiscount.getEndDate()
+                itemDiscount.getEndDate(),
+                itemId
         );
     }
 

@@ -120,6 +120,7 @@ public class StoreService {
     }
 
     private ItemDiscountResponse convertDiscountToResponse(ItemDiscount discount) {
+        Long itemId = discount.getStoreItem().getItem().getId();
         return new ItemDiscountResponse(
                 discount.getId(),
                 discount.getStoreItem().getId(),
@@ -127,7 +128,8 @@ public class StoreService {
                 discount.getOldPrice(),
                 discount.getDiscountPercentage(),
                 discount.getStartDate(),
-                discount.getEndDate()
+                discount.getEndDate(),
+                itemId
         );
     }
 
