@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.storeItem.StoreItemRequest;
 import com.example.demo.dto.storeItem.StoreItemResponse;
+import com.example.demo.dto.storeItemBestValueResponse.StoreItemBestValueResponse;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.StoreItem;
 import com.example.demo.model.Store;
@@ -12,6 +13,7 @@ import com.example.demo.repository.ItemRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,6 +116,32 @@ public class StoreItemService {
                 storeItem.getTotalPrice(),
                 storeItem.getUnits(),
                 storeItem.getCurrency()
+        );
+    }
+
+    public StoreItemBestValueResponse findBestValuePerUnit(Long storeItemId) {
+        // Finding the original StoreItem
+        StoreItem originalItem = storeItemRepository.findById(storeItemId)
+                .orElseThrow(() -> new NotFoundException("StoreItem nu există"));
+
+        // Extracts all the StoreItems that belong to the Item
+        List<StoreItem> allItemsForProduct = storeItemRepository.findByItemId(originalItem.getItem().getId());
+
+        //  Calculates the price per unit for each one and returns the min
+        StoreItem bestItem = allItemsForProduct.stream()
+                .min(Comparator.comparingDouble(item ->
+                        item.getTotalPrice() / item.getUnits()
+                ))
+                .orElseThrow(() -> new NotFoundException("Nu există alte storeItem-uri pentru acest produs"));
+
+        return new StoreItemBestValueResponse(
+                bestItem.getId(),
+                bestItem.getStore().getId(),
+                bestItem.getItem().getId(),
+                bestItem.getTotalPrice(),
+                bestItem.getUnits(),
+                bestItem.getTotalPrice() / bestItem.getUnits(),
+                bestItem.getCurrency()
         );
     }
 }

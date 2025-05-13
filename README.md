@@ -77,9 +77,8 @@ GET http://localhost:8080/price-history/dynamic-price-history?
 
 Product Substitutes & Recommendations: - Highlight "value per unit" (e.g., price per kg, price per liter) to help identify the 
 					 best buys, even if the pack size differs. 
-- TODO
-
-
+- SOLVED -
+GET http://localhost:8080/store-item/{{storeItemId}}/best-value
 
 
 Custom Price Alert: - Allow users to set a target price for a product. The system should be able to identify when a 

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ResponseDto;
 import com.example.demo.dto.storeItem.StoreItemRequest;
 import com.example.demo.dto.storeItem.StoreItemResponse;
+import com.example.demo.dto.storeItemBestValueResponse.StoreItemBestValueResponse;
 import com.example.demo.dto.user.UserResponse;
 import com.example.demo.service.StoreItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -103,5 +104,20 @@ public class StoreItemController {
         return ResponseEntity.ok(storeItems);
     }
 
+    @Operation(summary = "Find the instance of a StoreItem with the best value per unit",
+            description = "Returns the StoreItem with the highest price/unit for that item")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "StoreItem found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = StoreItemBestValueResponse.class))),
+            @ApiResponse(responseCode = "404", description = "The StoreItem doesn't exist",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/{storeItemId}/best-value")
+    public ResponseEntity<StoreItemBestValueResponse> getBestValuePerUnit(@PathVariable Long storeItemId) {
+        StoreItemBestValueResponse bestValueItem = storeItemService.findBestValuePerUnit(storeItemId);
+        return ResponseEntity.ok(bestValueItem);
+    }
 
 }
