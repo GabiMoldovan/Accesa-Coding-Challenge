@@ -20,7 +20,8 @@ public class DatabaseInitializer {
 
         2. Uncomment the "insertDummyDataInDB.populateDatabase();" line
 
-        3. Run the application, let it finish the initialization, then close the application
+        3. Run the application, let it finish the initialization, then close the application (make sure to close it
+        fast enough so the initialization method doesn't execute multiple times )
         and comment back the line "insertDummyDataInDB.populateDatabase();"
 
 
