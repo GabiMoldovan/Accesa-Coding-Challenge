@@ -81,9 +81,12 @@ Product Substitutes & Recommendations: - Highlight "value per unit" (e.g., price
 GET http://localhost:8080/store-item/{{storeItemId}}/best-value
 
 
+
+
 Custom Price Alert: - Allow users to set a target price for a product. The system should be able to identify when a 
 		      product's price drops to or below that target. 
-- TODO
+- SOLVED -
+GET http://localhost:8080/price-alerts/user/{{userId}}/get-triggered-alerts
 
 
 # To run the project:
@@ -298,3 +301,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 2. I added the solution to the third requirement
 
 3. I added the solution for the fourth requirement
+
+4. I added the solution for the fifth requirement
+
+5. I added the solution for the sixth requirement

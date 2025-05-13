@@ -122,7 +122,7 @@ public class StoreItemService {
     public StoreItemBestValueResponse findBestValuePerUnit(Long storeItemId) {
         // Finding the original StoreItem
         StoreItem originalItem = storeItemRepository.findById(storeItemId)
-                .orElseThrow(() -> new NotFoundException("StoreItem nu există"));
+                .orElseThrow(() -> new NotFoundException("StoreItem doesn't exist"));
 
         // Extracts all the StoreItems that belong to the Item
         List<StoreItem> allItemsForProduct = storeItemRepository.findByItemId(originalItem.getItem().getId());
@@ -132,7 +132,7 @@ public class StoreItemService {
                 .min(Comparator.comparingDouble(item ->
                         item.getTotalPrice() / item.getUnits()
                 ))
-                .orElseThrow(() -> new NotFoundException("Nu există alte storeItem-uri pentru acest produs"));
+                .orElseThrow(() -> new NotFoundException("There are no storeItems for this Item"));
 
         return new StoreItemBestValueResponse(
                 bestItem.getId(),

@@ -173,7 +173,7 @@ public class InsertDummyDataInDB {
                 new StoreItemRequest(1L, 22L, 3.49f, 1, Currency.RON),
                 new StoreItemRequest(1L, 23L, 2.95f, 1, Currency.RON),
                 new StoreItemRequest(1L, 24L, 3.10f, 1, Currency.RON),
-                new StoreItemRequest(1L, 25L, 25.00f, 0.2f, Currency.RON),
+                new StoreItemRequest(1L, 25L, 22.00f, 0.2f, Currency.RON),
 
                 // Profi (store_id=2)
                 new StoreItemRequest(2L, 1L, 12.90f, 1, Currency.RON),
@@ -284,7 +284,7 @@ public class InsertDummyDataInDB {
     }
 
     private void createPriceAlerts() {
-        priceAlertService.createAlert(new PriceAlertRequest(1L, 7L, 25.00f));
+        priceAlertService.createAlert(new PriceAlertRequest(1L, 7L, 28.00f));
         priceAlertService.createAlert(new PriceAlertRequest(1L, 21L, 12.50f));
         priceAlertService.createAlert(new PriceAlertRequest(1L, 25L, 22.00f));
     }

@@ -4,6 +4,7 @@ import com.example.demo.dto.ResponseDto;
 import com.example.demo.dto.priceAlert.PriceAlertRequest;
 import com.example.demo.dto.priceAlert.PriceAlertResponse;
 import com.example.demo.dto.priceAlertPatchRequest.PriceAlertPatchRequest;
+import com.example.demo.dto.triggeredPriceAlertResponse.TriggeredPriceAlertResponse;
 import com.example.demo.service.PriceAlertService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -105,4 +106,19 @@ public class PriceAlertController {
     public ResponseEntity<List<PriceAlertResponse>> getAlertsByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(priceAlertService.getAlertsByUserId(userId));
     }
+
+    @Operation(summary = "Get triggered price alerts", description = "Returns the store items with their price <= target price")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of the triggered price alerts",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TriggeredPriceAlertResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/user/{userId}/get-triggered-alerts")
+    public ResponseEntity<List<TriggeredPriceAlertResponse>> getTriggeredAlerts(@PathVariable Long userId) {
+        return ResponseEntity.ok(priceAlertService.getTriggeredAlerts(userId));
+    }
+
 }
