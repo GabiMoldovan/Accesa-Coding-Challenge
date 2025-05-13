@@ -321,3 +321,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 5. I added the solution for the sixth requirement
 
 6. Optimized the data base initializer
+
+# 14.02.2025
+
+1. I created an API documentation where you can search how to call almost every endpoint that the application exposes
