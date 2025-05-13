@@ -18,4 +18,15 @@ public interface PriceHistoryRepo extends JpaRepository<PriceHistory, Long> {
                                     @Param("storeId") Long storeId,
                                     @Param("startDate") LocalDateTime startDate,
                                     @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT ph FROM PriceHistory ph " +
+            "JOIN ph.storeItem si " +
+            "JOIN si.item i " +
+            "WHERE (:storeId IS NULL OR ph.store.id = :storeId) " +
+            "AND (:category IS NULL OR i.category = :category) " +
+            "AND (:brand IS NULL OR i.brand = :brand)")
+    List<PriceHistory> findFilteredByStoreCategoryBrand(
+            @Param("storeId") Long storeId,
+            @Param("category") String category,
+            @Param("brand") String brand);
 }

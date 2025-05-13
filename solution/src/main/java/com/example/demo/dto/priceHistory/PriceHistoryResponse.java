@@ -19,13 +19,22 @@ public record PriceHistoryResponse(
         LocalDateTime date,
 
         @Schema(description = "The new price value")
-        float price
+        float price,
+
+        @Schema(description = "The category of the product")
+        String category,
+
+        @Schema(description = "The brand of the product")
+        String brand
 ) {
-    public PriceHistoryResponse(Long priceHistoryId, Long storeItemId, Long storeId, LocalDateTime date, float price) {
+    public PriceHistoryResponse(Long priceHistoryId, Long storeItemId, Long storeId, LocalDateTime date, float price,
+                                String category, String brand) {
         this.priceHistoryId = priceHistoryId;
         this.storeItemId = storeItemId;
         this.storeId = storeId;
         this.date = date;
         this.price = price;
+        this.category = category;
+        this.brand = brand;
     }
 }

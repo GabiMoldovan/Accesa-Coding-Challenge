@@ -15,7 +15,9 @@ public class PriceHistoryMapper {
                 priceHistory.getStoreItem().getId(),
                 priceHistory.getStore().getId(),
                 priceHistory.getDate(),
-                priceHistory.getPrice()
+                priceHistory.getPrice(),
+                priceHistory.getStoreItem().getItem().getCategory().name(),
+                priceHistory.getStoreItem().getItem().getBrand()
         );
     }
 

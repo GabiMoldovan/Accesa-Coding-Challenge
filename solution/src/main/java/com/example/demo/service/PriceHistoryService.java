@@ -49,7 +49,9 @@ public class PriceHistoryService {
                 history.getStoreItem().getId(),
                 history.getStore().getId(),
                 history.getDate(),
-                history.getPrice()
+                history.getPrice(),
+                history.getStoreItem().getItem().getCategory().name(),
+                history.getStoreItem().getItem().getBrand()
         );
     }
 
@@ -75,4 +77,12 @@ public class PriceHistoryService {
 
         historyRepository.save(history);
     }
+
+    public List<PriceHistoryResponse> getFilteredPriceHistoryByStoreCategoryBrand(Long storeId, String category, String brand) {
+        return historyRepository.findFilteredByStoreCategoryBrand(storeId, category, brand)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
 }

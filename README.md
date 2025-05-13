@@ -66,7 +66,11 @@ GET http://localhost:8080/discounts/recent?hours={nr_of_hours}
 Dynamic Price History Graphs: - Provide data points that would allow a frontend to calculate
 				and display price trends over time for individual products.  
  			      - This data should be filterable by store, product category, or brand.
-- TODO
+- SOLVED -
+GET http://localhost:8080/price-history/dynamic-price-history?
+    storeId=store_id&
+    category=category_name&
+    brand=brand_name
 
 
 
@@ -293,3 +297,5 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 1. I added the solution to the second requirement
 
 2. I added the solution to the third requirement
+
+3. I added the solution for the fourth requirement

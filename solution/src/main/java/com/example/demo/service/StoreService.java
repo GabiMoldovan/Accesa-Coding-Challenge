@@ -139,7 +139,9 @@ public class StoreService {
                 history.getStoreItem().getId(),
                 history.getStore().getId(),
                 history.getDate(),
-                history.getPrice()
+                history.getPrice(),
+                history.getStoreItem().getItem().getCategory().name(),
+                history.getStoreItem().getItem().getBrand()
         );
     }
 

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +29,8 @@ public class PriceHistoryController {
     }
 
     @Operation(
-            summary = "Get price history for a product",
-            description = "Returns a list of price history entries for a specific store item, optionally filtered by " +
-                    "storeId, startDate and endDate."
+            summary = "Get price history filtered by store, category, or brand",
+            description = "Returns a list of price history entries filterable by store, product category, or brand."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Price history retrieved successfully",
@@ -45,12 +43,12 @@ public class PriceHistoryController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseDto.class)))
     })
-    @GetMapping("/product/{itemId}")
-    public ResponseEntity<List<PriceHistoryResponse>> getPriceHistoryForProduct(
-            @PathVariable Long itemId,
+    @GetMapping("/dynamic-price-history")
+    public ResponseEntity<List<PriceHistoryResponse>> getPriceHistory(
             @RequestParam(required = false) Long storeId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return ResponseEntity.ok(priceHistoryService.getFilteredPriceHistory(itemId, storeId, startDate, endDate));
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String brand) {
+        return ResponseEntity.ok(priceHistoryService.getFilteredPriceHistoryByStoreCategoryBrand(storeId, category, brand));
     }
+
 }
