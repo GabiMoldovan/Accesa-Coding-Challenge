@@ -36,6 +36,7 @@ And any time the price of a store item is updated, we register the entry in the 
 
 
 Daily Shopping Basket Monitoring: - Help users split their basket into shopping lists that optimise for cost savings
+
 I solved it by letting users pick what items they want, and added a "optimization" endpoint that works like this:
 Let's say that the user has 3 baskets, each basket for one store, with their specific items in it.
 By accessing the endpoint, the backend gets the pool of items that's in all the baskets, and for each item, we search
@@ -48,6 +49,7 @@ The endpoint will return the optimized baskets
 
 
 Best Discounts: - List products with the highest current percentage discounts across all tracked stores.
+
 The backend gets all the store items that have a discount, and sort them descending, and return the list of discounts with unique items
 (the items with the lowest prices after the discounts)
 - SOLVED -
@@ -57,6 +59,7 @@ GET http://localhost:8080/discounts/all-items-discounts-with-max-discount-per-it
 
 
 New Discounts: - List discounts that have been newly added (e.g., within the last 24 hours, 48 and 72)
+
 The backend checks for the discounts that have became active within a specific period of time and returns them (startDate <= now <= startDate+numberOfHours)
 - SOLVED -
 GET http://localhost:8080/discounts/recent?hours={nr_of_hours}
@@ -73,7 +76,7 @@ GET http://localhost:8080/price-history/dynamic-price-history?
     storeId=store_id&
 
     category=category_name&
-    
+
     brand=brand_name
 
 
@@ -125,17 +128,21 @@ POST http://localhost:8080/signup
 Content-Type: application/json
 
 {
+
   "firstName": "",
+
   "lastName": "",
+
   "email": "",
+
   "password": ""
+
 }
 
 # IMPORTANT
 
 7. If you want to automatically populate the database with the dummy data that I provided in the data for the "data for the data base" folder, please check the databaseInitializer and go to DatabaseInitializer
 
-# IMPORTANT
 
 
 In this file, you will find the documentation for implementing the project.
