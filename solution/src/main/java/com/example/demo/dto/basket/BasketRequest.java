@@ -1,7 +1,6 @@
 package com.example.demo.dto.basket;
 
 import com.example.demo.dto.basketItem.BasketItemRequest;
-import com.example.demo.model.BasketItem;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

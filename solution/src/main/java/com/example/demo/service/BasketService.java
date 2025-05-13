@@ -80,7 +80,7 @@ public class BasketService {
         basketRepository.delete(basket);
     }
 
-    private BasketResponse convertToResponse(Basket basket) {
+    public BasketResponse convertToResponse(Basket basket) {
         List<BasketItemResponse> items = basket.getItems().stream()
                 .map(this::convertItemToResponse)
                 .collect(Collectors.toList());

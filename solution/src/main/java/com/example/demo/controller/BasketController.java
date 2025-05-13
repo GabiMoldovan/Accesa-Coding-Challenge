@@ -5,6 +5,7 @@ import com.example.demo.dto.basket.BasketResponse;
 import com.example.demo.dto.purchasedItem.PurchasedItemRequest;
 import com.example.demo.dto.spending.SpendingRequest;
 import com.example.demo.dto.spending.SpendingResponse;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.Basket;
 import com.example.demo.model.BasketItem;
 import com.example.demo.service.BasketService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -153,5 +155,28 @@ public class BasketController {
         List<BasketResponse> optimizedBaskets = basketService.optimizeBaskets(userId);
         return ResponseEntity.ok(optimizedBaskets);
     }
+
+    @Operation(summary = "Get a basket by user id and store id", description = "Returns a basket for a specific user" +
+            " at a specific store")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "A basket",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BasketResponse.class, type = "array"))),
+            @ApiResponse(responseCode = "404", description = "Basket or user not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/users/{userId}/stores/{storeId}")
+    public ResponseEntity<BasketResponse> getBasketByUserIdAndStoreId(@PathVariable Long userId, @PathVariable Long storeId) {
+        Optional<Basket> optionalBasket = basketService.findByUserIdAndStoreId(userId, storeId);
+
+        if (optionalBasket.isEmpty()) {
+            throw new NotFoundException("Basket not found for userId: " + userId + " and storeId: " + storeId);
+        }
+
+        BasketResponse response = basketService.convertToResponse(optionalBasket.get());
+        return ResponseEntity.ok(response);
+    }
+
 
 }

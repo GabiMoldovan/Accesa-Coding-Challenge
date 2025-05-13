@@ -55,15 +55,6 @@ public class PriceHistoryService {
         );
     }
 
-    public List<PriceHistoryResponse> getFilteredPriceHistory(Long itemId, Long storeId,
-                                                              LocalDateTime startDate,
-                                                              LocalDateTime endDate) {
-        return historyRepository.findFiltered(itemId, storeId, startDate, endDate)
-                .stream()
-                .map(this::convertToResponse)
-                .collect(Collectors.toList());
-    }
-
     @Transactional
     public void recordPriceChange(Long itemId, Long storeId, float newPrice) {
         StoreItem storeItem = storeItemRepository.findByItemIdAndStoreId(itemId, storeId)
@@ -84,5 +75,18 @@ public class PriceHistoryService {
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
+
+    public List<PriceHistoryResponse> getAllPriceHistoryForItemAtStore(Long itemId, Long storeId) {
+        List<PriceHistory> historyList = historyRepository.findByItemIdAndStoreId(itemId, storeId);
+
+        if (historyList.isEmpty()) {
+            throw new NotFoundException("No price history found for item " + itemId + " at store " + storeId);
+        }
+
+        return historyList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
 
 }

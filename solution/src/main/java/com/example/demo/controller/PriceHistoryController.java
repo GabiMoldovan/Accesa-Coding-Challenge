@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ResponseDto;
+import com.example.demo.dto.basket.BasketResponse;
 import com.example.demo.dto.priceHistory.PriceHistoryResponse;
 import com.example.demo.service.PriceHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,6 +49,25 @@ public class PriceHistoryController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String brand) {
         return ResponseEntity.ok(priceHistoryService.getFilteredPriceHistoryByStoreCategoryBrand(storeId, category, brand));
+    }
+
+
+    @Operation(summary = "Gets all price history for an item at a specific store", description = "Returns a list of " +
+            "price changes for a specific item in a given store")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of price history found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PriceHistoryResponse.class, type = "array"))),
+            @ApiResponse(responseCode = "404", description = "No price history found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/item/{itemId}/store/{storeId}")
+    public ResponseEntity<List<PriceHistoryResponse>> getPriceHistoryForItemAtStore(
+            @PathVariable Long itemId,
+            @PathVariable Long storeId) {
+        List<PriceHistoryResponse> response = priceHistoryService.getAllPriceHistoryForItemAtStore(itemId, storeId);
+        return ResponseEntity.ok(response);
     }
 
 }
