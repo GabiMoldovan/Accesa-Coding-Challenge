@@ -56,7 +56,6 @@ public class BasketItemController {
     })
     @PostMapping
     @Transactional
-    @PreAuthorize("#userId == authentication.principal.id")
     public ResponseEntity<BasketItemResponse> addItemToBasket(
             @RequestParam Long userId,
             @RequestParam Long storeId,

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ResponseDto;
 import com.example.demo.dto.basket.BasketResponse;
 import com.example.demo.dto.priceHistory.PriceHistoryResponse;
+import com.example.demo.model.enums.Category;
 import com.example.demo.service.PriceHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -46,7 +47,7 @@ public class PriceHistoryController {
     @GetMapping("/dynamic-price-history")
     public ResponseEntity<List<PriceHistoryResponse>> getPriceHistory(
             @RequestParam(required = false) Long storeId,
-            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Category category,
             @RequestParam(required = false) String brand) {
         return ResponseEntity.ok(priceHistoryService.getFilteredPriceHistoryByStoreCategoryBrand(storeId, category, brand));
     }

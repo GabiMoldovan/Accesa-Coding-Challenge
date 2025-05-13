@@ -6,6 +6,7 @@ import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.PriceHistory;
 import com.example.demo.model.Store;
 import com.example.demo.model.StoreItem;
+import com.example.demo.model.enums.Category;
 import com.example.demo.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -69,7 +70,7 @@ public class PriceHistoryService {
         historyRepository.save(history);
     }
 
-    public List<PriceHistoryResponse> getFilteredPriceHistoryByStoreCategoryBrand(Long storeId, String category, String brand) {
+    public List<PriceHistoryResponse> getFilteredPriceHistoryByStoreCategoryBrand(Long storeId, Category category, String brand) {
         return historyRepository.findFilteredByStoreCategoryBrand(storeId, category, brand)
                 .stream()
                 .map(this::convertToResponse)
