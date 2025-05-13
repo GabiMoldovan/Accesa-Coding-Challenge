@@ -127,8 +127,11 @@ Content-Type: application/json
   "password": ""
 }
 
+# IMPORTANT
 
-7. If you want to automatically populate the database with the dummy data that I provided in the data for the data base folder, please check the databaseInitializer and go to InsertDummyDataInDB
+7. If you want to automatically populate the database with the dummy data that I provided in the data for the "data for the data base" folder, please check the databaseInitializer and go to DatabaseInitializer
+
+# IMPORTANT
 
 
 In this file, you will find the documentation for implementing the project.
@@ -305,3 +308,5 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 4. I added the solution for the fifth requirement
 
 5. I added the solution for the sixth requirement
+
+6. Optimized the data base initializer

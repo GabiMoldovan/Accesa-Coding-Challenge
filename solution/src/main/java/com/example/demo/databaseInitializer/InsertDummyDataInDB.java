@@ -51,54 +51,35 @@ public class InsertDummyDataInDB {
     @Autowired
     private PurchasedItemService purchasedItemService;
 
+
     @Transactional
     public void populateDatabase() {
-        /*
-        HOW TO INITIALIZE THE DATA BASE:
-        1. Make sure that you have a user created.
-        You can create is using the signup endpoint
-        This initializer is meant to populate the entries for the user with id = 1
+        for(int initializeDBCounter=1;initializeDBCounter<=8;initializeDBCounter++) {
 
-        2. Uncomment the first step method, the one that creates the items.
-        Run the app
-        After it starts and you see that the table has been populated, stop it
-        Comment back the first step
+            // 1. Create items (30 entries)
+            if(initializeDBCounter == 1 ) createItems();
 
-        3. Do 2. for each step, so for 2 (create stores), for 3 (create store items)
-        And so on.
-        It is important that you restart the app after populating each table
-        If you populate all tables at once, the app will crash
+            // 2. Create stores (3 entries)
+            if(initializeDBCounter == 2 ) createStores();
 
-        4. After you are done with populating each table, make sure that you don't have
-        any steps uncommented
+            // 3. Create store items (76 entries)
+            if(initializeDBCounter == 3 ) createStoreItems();
 
-        5. In-case you fail to follow these steps, and an error acquires, drop all tables
-        and start from step 1
-         */
+            // 4. Create baskets (3 entries)
+            if(initializeDBCounter == 4 ) createBaskets();
 
-        // 1. Create items (30 entries)
-        //createItems();
+            // 5. Create basket items (16 entries)
+            if(initializeDBCounter == 5 ) createBasketItems();
 
-        // 2. Create stores (3 entries)
-        //createStores();
+            // 6. Create item discounts (3 entries)
+            if(initializeDBCounter == 6 ) createItemDiscounts();
 
-        // 3. Create store items (76 entries)
-        //createStoreItems();
+            // 7. Create price alerts (3 entries)
+            if(initializeDBCounter == 7 ) createPriceAlerts();
 
-        // 4. Create baskets (3 entries)
-        //createBaskets();
-
-        // 5. Create basket items (16 entries)
-        //createBasketItems();
-
-        // 6. Create item discounts (3 entries)
-        //createItemDiscounts();
-
-        // 7. Create price alerts (3 entries)
-        //createPriceAlerts();
-
-        // 8. Create spending and purchased items
-        //createSpendingsAndPurchasedItems();
+            // 8. Create spending and purchased items
+            if(initializeDBCounter == 8 ) createSpendingsAndPurchasedItems();
+        }
     }
 
     private void createItems() {
@@ -301,8 +282,6 @@ public class InsertDummyDataInDB {
                 ),
                 58.19f,
                 LocalDateTime.of(2025, 5, 1, 11, 37, 26)
-
-
         );
         spendingService.createSpending(spendingRequest);
     }
