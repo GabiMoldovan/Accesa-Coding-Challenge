@@ -43,6 +43,7 @@ the stores to find the cheapest possible instance of that item. We do that for a
 So in the end, the user will have their baskets shuffled, but the baskets will contain the cheapest items in the mall.
 - SOLVED -
 POST http://localhost:8080/baskets/users/{{userId}}/optimize
+
 The endpoint will return the optimized baskets
 
 
@@ -68,8 +69,11 @@ Dynamic Price History Graphs: - Provide data points that would allow a frontend 
  			      - This data should be filterable by store, product category, or brand.
 - SOLVED -
 GET http://localhost:8080/price-history/dynamic-price-history?
+
     storeId=store_id&
+
     category=category_name&
+    
     brand=brand_name
 
 
