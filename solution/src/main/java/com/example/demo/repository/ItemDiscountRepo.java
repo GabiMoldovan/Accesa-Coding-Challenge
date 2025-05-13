@@ -16,4 +16,9 @@ public interface ItemDiscountRepo extends JpaRepository<ItemDiscount, Long> {
 
     @Query("SELECT d FROM ItemDiscount d JOIN FETCH d.storeItem si JOIN FETCH si.item WHERE d.startDate <= :start AND d.endDate >= :end")
     List<ItemDiscount> findActiveDiscountsWithItems(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    @Query("SELECT d FROM ItemDiscount d " +
+            "WHERE d.startDate BETWEEN :cutoffStart AND :now")
+    List<ItemDiscount> findActiveInGivenRange(@Param("cutoffStart") LocalDateTime cutoffStart,
+                                              @Param("now") LocalDateTime now);
 }

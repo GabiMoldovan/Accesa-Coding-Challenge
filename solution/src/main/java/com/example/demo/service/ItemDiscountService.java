@@ -181,4 +181,13 @@ public class ItemDiscountService {
         return discount.getOldPrice() * (1 - discount.getDiscountPercentage() / 100);
     }
 
+    public List<ItemDiscountResponse> getDiscountsActiveInLastGivenHours(int hours) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime cutoffStart = now.minusHours(hours);
+        return discountRepository.findActiveInGivenRange(cutoffStart, now)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
 }

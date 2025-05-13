@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -158,6 +159,24 @@ public class DiscountController {
 
         List<ItemDiscountResponse> result = new ArrayList<>(maxDiscountMap.values());
         return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "Get recently added discounts", description = "Fetches discounts added within the last specified hours.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Discounts retrieved successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ItemDiscountResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid hours parameter",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/recent")
+    public ResponseEntity<List<ItemDiscountResponse>> getRecentDiscounts(
+            @RequestParam @Positive(message = "Hours must be a positive number") int hours) {
+        return ResponseEntity.ok(discountService.getDiscountsActiveInLastGivenHours(hours));
     }
 
 }

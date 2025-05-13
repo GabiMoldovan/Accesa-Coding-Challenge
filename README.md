@@ -28,6 +28,9 @@ Store item prices are updated when discounts are created.
 If a discount expires, the price is set back to their original price.
 This feature is functional as well
 
+When an item is registered as a store item, we also register the first price history for that item
+And any time the price of a store item is updated, we register the entry in the price history (updated by user or discount)
+
 
 # So we have to solve the following problems:
 
@@ -53,8 +56,9 @@ GET http://localhost:8080/discounts/all-items-discounts-with-max-discount-per-it
 
 
 New Discounts: - List discounts that have been newly added (e.g., within the last 24 hours, 48 and 72)
-The backend checks for the discounts that have been added within a specific period of time and returns them
-- TODO
+The backend checks for the discounts that have became active within a specific period of time and returns them (startDate <= now <= startDate+numberOfHours)
+- SOLVED -
+GET http://localhost:8080/discounts/recent?hours={nr_of_hours}
 
 
 
@@ -143,7 +147,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 
 4. I added the database
 
-5. Managed to make all the configurations necessary for implementing the project (also added swagger and lombok)
+5. Managed to make all the configurations necessary for implementing the project (also added swagger for api documentation and lombok to avoid the boilerplate code)
 
 
 # 10.05.2025:
