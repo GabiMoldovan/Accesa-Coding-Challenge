@@ -1,7 +1,7 @@
 # Accesa-Coding-Challenge
 
 
-# CONTEXT (PLEASE READ ALL)
+# CONTEXT (PLEASE READ THE ENTIRE FILE)
 
 
 Build the backend for a "Price Comparator - Market" -  a service that helps users compare prices of everyday grocery items 
