@@ -134,12 +134,24 @@ It has all the progress throughout each day.
 
 - Functionality
 
-Correct and robust implementation of the specified business requirements (core features, analytical aspects, notifications) - Implemented all the core features with paying attention to details (check the statement below, the accuracy of data processing, calculations and comparisons). Also exposed all the necessary endpoints for the necessary frontend features, like: authentification controller (register/login), user controller(create user, delete user, get user by id), item controller(create item, get item by id, update item, delete item, get all items, ), store controller (create store, get store by id, update store, delete store), and so on. Check the controllers for all the features.
+Correct and robust implementation of the specified business requirements (core features, analytical aspects, notifications) - All core features have been implemented with careful attention to detail, including data accuracy, processing, and logic validation. The backend exposes all required endpoints to support frontend functionality, such as:
+
+Authentication Controller: for user registration and login
+
+User Controller: create, delete, and retrieve users by ID
+
+Item Controller: create, retrieve (by ID), update, delete items, and list all items
+
+Store Controller: create, retrieve (by ID), update, and delete stores
+
+All controllers are structured to reflect the full set of application features. You can refer to the individual controller classes for a complete list of exposed endpoints.
 
 
-Accuracy of data processing, calculations, and comparisons - Discounts are automatically applied to the store items when the discount becomes active.
-Price history of a store item is correctly registered in the price history table (whenever we add a store item, when a discount becomes active and inactive, or when we update the price of a store item).
-Users passwords are crypted in the database for security.
+Accuracy of data processing, calculations, and comparisons - Discounts are applied automatically to store items when they become active, ensuring up-to-date pricing.
+
+Every price change — whether due to a manual update or an active/inactive discount — is accurately logged in the price_history table.
+
+User passwords are securely stored using encryption to ensure data protection and privacy.
 
 
 Effective handling of sample data and edge cases presented in your data - I created my own dataset based on the sample data.
