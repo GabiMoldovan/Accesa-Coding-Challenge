@@ -87,13 +87,13 @@ Custom Price Alert: - Allow users to set a target price for a product. The syste
 
 
 0. Make sure that you have Java installed correctly.
-THE PROJECT RUNS ON JAVA 21
+THE PROJECT RUNS ON JAVA 21.
 
 
-1. Clone it
+1. Clone it.
 
 
-2. Create the PostGreSQL database. Name it AccesaInternship
+2. Create the PostGreSQL database. Name it AccesaInternship.
 
 
 3. Open the project and add the environment variable which is the jdbc connection string.
@@ -101,12 +101,12 @@ Mine looks like this: DATASOURCE_URL=jdbc:postgresql://localhost:5432/AccesaInte
 
 
 If you have the default pgAdmin settings, use the same username, but modify the DATASOURCE_PASS with your own password.
-Also change the name of the database if you didn't name it AccesaInternship
+Also change the name of the database if you didn't name it AccesaInternship.
 
 
 5. If you want to view the data in the tables, add the database (the sidebar on the right, there is the database icon right above the maven one).
 Click on New, Data Source, then select PostGreSQL. Put your user, password, and the name of the databse.
-Or you can view it in pgAdmin
+Or you can view it in pgAdmin.
 
 
 6. Use Postman to create a user.
@@ -127,6 +127,94 @@ Content-Type: application/json
 
 In this file, you will find the documentation for implementing the project.
 It has all the progress throughout each day.
+
+
+# Implementation explanation (based on the evaluation criteria)
+
+
+- Functionality
+
+Correct and robust implementation of the specified business requirements (core features, analytical aspects, notifications) - Implemented all the core features with paying attention to details (check the statement below, the accuracy of data processing, calculations and comparisons). Also exposed all the necessary endpoints for the necessary frontend features, like: authentification controller (register/login), user controller(create user, delete user, get user by id), item controller(create item, get item by id, update item, delete item, get all items, ), store controller (create store, get store by id, update store, delete store), and so on. Check the controllers for all the features.
+
+
+Accuracy of data processing, calculations, and comparisons - Discounts are automatically applied to the store items when the discount becomes active.
+Price history of a store item is correctly registered in the price history table (whenever we add a store item, when a discount becomes active and inactive, or when we update the price of a store item).
+Users passwords are crypted in the database for security.
+
+
+Effective handling of sample data and edge cases presented in your data - I created my own dataset based on the sample data.
+Please check the dummy_data.txt in the data for the data base folder.
+
+
+- Solution Design
+
+Soundness of your overall backend design - The models serve as the blueprint for the entities in the application, mapping each entity to a corresponding table in the database using JPA annotations. The JPA repositories provide an abstraction layer for data access, enabling CRUD operations without the need for boilerplate SQL code.
+
+To ensure clean separation of concerns, we implement internal business logic to convert data from entity format to DTO (Data Transfer Object) format using mappers, which are useful for structuring API responses.
+
+The service layer handles the core business logic, orchestrating operations such as validation, transformations, and interactions with multiple repositories or external services when needed. This keeps the logic centralized and reusable.
+
+The controllers act as the entry point to the application, handling HTTP requests and responses. They delegate processing to the service layer, ensuring that the application remains modular, maintainable, and easy to test. This layered architecture promotes a clear separation of responsibilities and enhances scalability and readability across the backend codebase.
+
+
+Appropriate choices for structuring your application (e.g., services, controllers, data access objects) - My implementation makes use of the MVC (Model-View-Controller) design pattern, ensuring a clear separation of concerns and a maintainable codebase.
+
+In my application, I structured the backend using several distinct layers:
+
+Controllers handle HTTP requests and responses, acting as the entry point of the application.
+
+DTOs (Data Transfer Objects) are used to define the shape of the data exchanged between the client and the server, helping to decouple the internal data structure from the API.
+
+Models represent the core entities of the application and are mapped to the database using JPA annotations.
+
+Repositories (JPA Repositories) provide the data access layer, abstracting database operations and offering built-in CRUD functionality.
+
+Services contain the business logic of the application, processing data and coordinating between the repository and other components.
+
+Mappers convert between entities and DTOs, ensuring clean data transformation and separation between persistence and API layers.
+
+Exception handling is centralized to provide meaningful error messages and consistent responses, improving robustness and user experience.
+
+This layered architecture enhances modularity, testability, and scalability, making the application easier to extend and maintain over time.
+
+
+How data is managed, processed, and accessed - Data is persistently stored in the database and accessed via JPA repositories. It is processed in the service layer, where the core business logic is applied. The controllers expose API endpoints that allow clients to interact with the data, delegating processing to the services and returning appropriate responses.
+
+Thoughtfulness regarding potential scalability or extensibility (even if not fully implemented) - I want to point out that we can add ROLES for users. So we'll have: USER, STORE_OWNER, ADMIN. By implementing this feature, we can limit the access of some features so they can be used only by the users with a specific role. For example, we only want users to be able to make purchases, delete items from their baskets, etc. We only want store owners to manage the store(s) that they are assigned to. So they'll be able to add store items, modify them, etc. And we want the admins to have full access to every feature of the app. This would be a nice feature.
+
+
+
+- Code Quality & Testing
+
+Clarity, readability, and organization of your Java code - The code is organized in a clean and modular structure, following best practices for separation of concerns. Each layer of the application — controllers, services, repositories, models, DTOs, and mappers — is clearly defined and placed in its own dedicated package.
+
+Methods and classes are named descriptively to reflect their purpose, and responsibilities are properly divided, avoiding duplication and tightly coupled logic. The use of annotations, dependency injection, and well-structured layers improves the overall readability and makes the application easy to navigate, maintain, and extend.
+
+Adherence to Java best practices and coding conventions - The code adheres to standard Java best practices and coding conventions. Class and method names follow the camelCase and PascalCase naming conventions appropriately, and access modifiers are used consistently to ensure encapsulation. Code is structured with clear indentation and spacing, enhancing readability.
+
+Annotations such as @Service, @RestController, and @Repository are used correctly to leverage Spring’s dependency injection and component scanning features. Constants, when needed, are declared as static final, and exception handling is implemented thoughtfully to provide meaningful error feedback.
+
+Additionally, responsibilities are well-separated across layers, avoiding code duplication and promoting reusability. The use of DTOs, mappers, and a layered architecture reflects a strong understanding of clean code principles and maintainable design.
+
+Modularity, maintainability, and good separation of concerns (e.g., distinct layers for data access, business logic) - The application is built with a well-defined layered architecture that promotes modularity and maintainability. Each layer has a clear responsibility: the controller layer handles HTTP requests and delegates tasks to the service layer, which contains the core business logic. Data persistence is handled separately by the repository layer, ensuring a clean abstraction over database operations.
+
+Additionally, DTOs and mappers are used to decouple internal data models from the API, further enforcing separation of concerns. This structure allows each component to evolve independently, simplifies testing, and makes the codebase easier to understand and extend. The overall design supports scalability and aligns with standard enterprise application patterns.
+
+Efficient use of data structures and algorithms where applicable - The application makes efficient use of Java's built-in data structures to manage and manipulate data effectively. Stream operations are used where appropriate to improve readability and performance when processing collections, particularly in mapping entities to DTOs.
+
+Algorithms and logic are kept simple and efficient, avoiding unnecessary complexity. Wherever possible, operations are optimized for performance and clarity, ensuring that the application remains responsive and scalable even as data volume increases. The use of efficient patterns like caching or validation at the service level (if implemented) further enhances performance and reliability.
+
+
+- Documentation & Presentation
+
+
+Clarity and completeness of the README.md file - I think that this file has everything to explain my thinking process
+
+
+Effectiveness of the video demonstration in showcasing the project's capabilities and your understanding. 
+
+
+Well-commented code where necessary to explain complex logic.
 
 
 # Progress Tracking:
@@ -191,3 +279,5 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 # 13.02.2025
 
 1. I added the solution to the second requirement
+
+2. I added the solution to the third requirement
