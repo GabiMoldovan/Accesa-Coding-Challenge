@@ -5,9 +5,7 @@ import com.example.demo.dto.item.ItemResponse;
 import com.example.demo.dto.itemPatchRequest.ItemPatchRequest;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.Item;
-import com.example.demo.model.StoreItem;
 import com.example.demo.repository.ItemRepo;
-import com.example.demo.repository.StoreItemRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +14,9 @@ import java.util.List;
 @Service
 public class ItemService {
     private final ItemRepo itemRepository;
-    private final StoreItemRepo storeItemRepo;
 
-    public ItemService(ItemRepo itemRepository, StoreItemRepo storeItemRepo) {
+    public ItemService(ItemRepo itemRepository) {
         this.itemRepository = itemRepository;
-        this.storeItemRepo = storeItemRepo;
     }
 
     public ItemResponse createItem(ItemRequest request) {
@@ -47,17 +43,6 @@ public class ItemService {
                 item.getBrand(),
                 item.getUnitType()
         );
-    }
-
-    @Transactional
-    public ItemResponse updateItemPrice(Long itemId, Long storeId, float newPrice) {
-        StoreItem storeItem = storeItemRepo.findByItemIdAndStoreId(itemId, storeId)
-                .orElseThrow(() -> new NotFoundException("Store item not found"));
-
-        storeItem.setTotalPrice(newPrice);
-        storeItemRepo.save(storeItem);
-
-        return convertToResponse(storeItem.getItem());
     }
 
     @Transactional

@@ -9,7 +9,6 @@ import com.example.demo.model.Basket;
 import com.example.demo.model.BasketItem;
 import com.example.demo.service.BasketService;
 import com.example.demo.service.SpendingService;
-import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,15 +31,28 @@ import java.util.stream.Collectors;
 public class BasketController {
     private final BasketService basketService;
     private final SpendingService spendingService;
-    private final UserService userService;
 
     @Autowired
     public BasketController(BasketService basketService,
-                            SpendingService spendingService,
-                            UserService userService) {
+                            SpendingService spendingService
+                            ) {
         this.basketService = basketService;
         this.spendingService = spendingService;
-        this.userService = userService;
+    }
+
+    @Operation(summary = "Gets a basket by id", description = "Returns a basket by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "A basket",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BasketResponse.class, type = "array"))),
+            @ApiResponse(responseCode = "404", description = "Basket not found",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/{basketId}")
+    public ResponseEntity<BasketResponse> getBasketById(@PathVariable Long basketId) {
+        BasketResponse basket = basketService.getBasketById(basketId);
+        return ResponseEntity.ok(basket);
     }
 
 

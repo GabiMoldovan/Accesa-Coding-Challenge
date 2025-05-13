@@ -61,7 +61,7 @@ public class PriceAlertService {
 
             float currentPrice = item.getTotalPrice();
             if(currentPrice <= alert.getTargetPrice()) {
-                System.out.println("Price alert triggered for user: " + alert.getUser().getEmail());
+                //System.out.println("Price alert triggered for user: " + alert.getUser().getEmail());
                 alertRepository.delete(alert);
             }
         });

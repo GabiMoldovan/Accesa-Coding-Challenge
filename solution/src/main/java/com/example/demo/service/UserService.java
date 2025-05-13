@@ -6,9 +6,6 @@ import com.example.demo.dto.user.UserRequest;
 import com.example.demo.dto.user.UserResponse;
 import com.example.demo.exceptions.AlreadyExistsException;
 import com.example.demo.exceptions.AuthException;
-import com.example.demo.model.Basket;
-import com.example.demo.model.PriceAlert;
-import com.example.demo.model.Spending;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.utils.mapper.UserMapper;
@@ -89,21 +86,6 @@ public class UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new AuthException.NotFoundException("Could not find user with email: " + email));
-    }
-
-    public List<Spending> getAllSpendings(Long userId) {
-        User user = findById(userId);
-        return user.getSpendings();
-    }
-
-    public List<Basket> getAllBaskets(Long userId) {
-        User user = findById(userId);
-        return user.getBaskets();
-    }
-
-    public List<PriceAlert> getAllPriceAlerts(Long userId) {
-        User user = findById(userId);
-        return user.getPriceAlerts();
     }
 
     public UserResponse findResponseByEmail(String email) {
