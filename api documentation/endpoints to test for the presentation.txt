@@ -1,0 +1,888 @@
+THE PROBLEM:
+
+Let's imagine that we are building the backend for an online mall. 
+There is a pool of items that can be found in one or multiple stores of that mall. 
+The mall has multiple stores, and each store with its own pool of items.
+Each store has its own configuration for each item. (so the store decides on the item's price and other configuration of the item)
+We have multiple users using our online mall application. 
+Each user has their own baskets, a only a basket for each store
+
+Store items can have discounts applied to them. 
+Store item prices are updated when discounts are created. 
+If a discount expires, the price is set back to their original price.
+
+When an item is registered as a store item, we also register the first price history for that item And any time the price of a store item is updated, we register the entry in t
+he price history (updated by user or discount)
+
+
+Run the application so the database gets created
+
+Create the user using Postman:
+
+http://localhost:8080/signup
+{
+  "firstName": "MyTestingUser",
+  "lastName": "AccesaInternship",
+  "email": "testing_the_app@test.com",
+  "password": "asdfasdf"
+}
+
+Run the DatabaseInitializer
+
+So we are going to use the dummy data that I provided for these tests. (the DatabaseInitializer inserts the data in the 
+dummy_data.txt in the database)
+
+
+=============================================================================================================
+
+First requirement: 
+
+Daily Shopping Basket Monitoring: - Help users split their basket into shopping lists that optimise for cost savings
+
+Description of the solution:
+I solved it by letting users pick what items they want, and added a "optimization" endpoint that works like this: 
+Let's say that the user has 3 baskets, each basket for one store, with their specific items in it. 
+By accessing the endpoint, the backend gets the pool of items that's in all the baskets, and for each item, we search the stores 
+to find the cheapest possible instance of that item. We do that for all the items.
+So in the end, the user will have their baskets shuffled, but the baskets will contain the cheapest items in the mall.
+
+
+
+The endpoint: http://localhost:8080/baskets/users/{{userId}}/optimize
+
+
+
+
+To test this, let's first take a look at what the user has inside their baskets right now:
+
+
+id;basket_id;item_id;quantity;price_at_addition;
+
+
+
+Basket at Lidl: User 1 has inside the basket 1 the follosing items: 
+1;1;1;1;9.90; => lapte zuzu with quantity 1 and the price 9.90
+2;1;2;1;11.50; => iaurt grecesc with quantity 1 and the price 11.50
+3;1;3;1;13.20; => oua marimea M with quantity 1 and the price 13.20
+4;1;4;1;12.80; => branza telemea with quantity 1 and the price 12.80
+5;1;5;1;3.50 => paine alba with quantity 1 and the price 3.50
+
+
+
+Basket at Profi: User 1 has inside the basket 2 the follosing items:
+6;2;1;1;9.90; => lapte zuzu with quantity 1 and the price 9.90
+7;2;3;1;13.20; => oua marimea M with quantity 1 and the price 13.20
+8;2;5;1;3.50; => paine alba with quantity 1 and the price 3.50
+9;2;7;1;28.50; => piept pui with quantity 1 and the price 28.50
+10;2;9;1;4.40; => zahar tos with quantity 1 and the price 4.40
+11;2;11;1;6.10; => banane with quantity 1 and the price 6.10
+12;2;13;1;7.10; => biscuiti cu unt with quantity 1 and the price 7.10
+
+
+
+
+Basket at Kaufland:
+13;3;4;1;13.10; => branza telemea with quantity 1 and the price 13.10
+14;3;5;1;3.60; => paine alba with quantity 1 and the price 3.60
+15;3;6;1;6.80; => rosii cherry with quantity 1 and the price 6.80
+16;3;7;1;27.90; => piept pui with quantity 1 and the price 27.90
+
+
+
+Let's make the pool of items that the user wants to purchase:
+
+2x lapte zuzu (item id 1)
+1x iaurt grecesc (item id 2)
+2x oua marimea M (item id 3)
+2x branza telemea (item id 4)
+3x paine alba (item id 5)
+2x piept pui (item id 7)
+1x zahar tos (item id 9)
+1x banane (item id 11)
+1x biscuiti cu unt (item id 13)
+1x rosii cherry (item id 6)
+
+
+
+Now let's search for the cheapest instance of that item in a store:
+
+lapte zuzu => found at store 1 (Lidl) with price 9.90
+iaurt grecesc => found at store 1 and 2 (Lidl and Profi) with price 11.50
+oua marimea M => found at store 2 (Profi) with price 12.20
+branza telemea => found at store 1 (Lidl) with price 12.80
+paine alba => found at store 1 and 2 (Lidl and Profi) with price 3.50
+piept pui => found at store 2 (Profi) with price 26.50
+zahar tos => found at store 1 (Lidl) with price 4.40
+banane => found at store 1 and 2 (Lidl and Profi) with price 6.10
+biscuiti cu unt => found at store 1 and 2 (Lidl and Profi) with price 7.10
+rosii cherry => found at store 1 (Lidl) with price 6.80
+
+So these is the result that we should get
+
+Let's run the endpoint and see what we get:
+[
+    {
+        "basketId": 1,
+        "userId": 1,
+        "storeId": 1,
+        "items": [
+            {
+                "id": 1,
+                "basketId": 1,
+                "storeItemId": 1,
+                "quantity": 2.0,
+                "priceAtAddition": 9.9
+            },
+            {
+                "id": 2,
+                "basketId": 1,
+                "storeItemId": 2,
+                "quantity": 1.0,
+                "priceAtAddition": 11.5
+            },
+            {
+                "id": 4,
+                "basketId": 1,
+                "storeItemId": 4,
+                "quantity": 2.0,
+                "priceAtAddition": 12.8
+            },
+            {
+                "id": 5,
+                "basketId": 1,
+                "storeItemId": 5,
+                "quantity": 3.0,
+                "priceAtAddition": 3.5
+            },
+            {
+                "id": 17,
+                "basketId": 1,
+                "storeItemId": 9,
+                "quantity": 1.0,
+                "priceAtAddition": 4.4
+            },
+            {
+                "id": 18,
+                "basketId": 1,
+                "storeItemId": 11,
+                "quantity": 1.0,
+                "priceAtAddition": 6.1
+            },
+            {
+                "id": 19,
+                "basketId": 1,
+                "storeItemId": 13,
+                "quantity": 1.0,
+                "priceAtAddition": 7.1
+            },
+            {
+                "id": 20,
+                "basketId": 1,
+                "storeItemId": 6,
+                "quantity": 1.0,
+                "priceAtAddition": 6.8
+            }
+        ]
+    },
+    {
+        "basketId": 2,
+        "userId": 1,
+        "storeId": 2,
+        "items": [
+            {
+                "id": 7,
+                "basketId": 2,
+                "storeItemId": 28,
+                "quantity": 2.0,
+                "priceAtAddition": 12.2
+            },
+            {
+                "id": 9,
+                "basketId": 2,
+                "storeItemId": 32,
+                "quantity": 2.0,
+                "priceAtAddition": 26.5
+            }
+        ]
+    },
+    {
+        "basketId": 3,
+        "userId": 1,
+        "storeId": 3,
+        "items": []
+    }
+]
+
+
+If we verify the expected result with the actual result, we can see that we successfully optimized the user's baskets
+
+
+=============================================================================================================
+
+Second requirement: 
+Best Discounts: - List products with the highest current percentage discounts across all tracked stores.
+
+
+Description of the solution:
+The backend gets all the store items that have a discount, and sort them descending, and return the 
+list of discounts with unique items (if multiple items have a discount, we only get the item that has the biggest discount)
+
+
+The endpoint: http://localhost:8080/discounts/all-items-discounts-with-max-discount-per-item
+
+DISCLAIMER: I will reset the data back to the original dummy data (By dropping all tables, registering the user again, and running the 
+DatabaseInitializer)
+
+Before we test it, let's take a look at the on-going discounts:
+
+1;19;1;23.50;10;2025-05-10 8:30:00.000000;2025-05-17 8:30:00.000000 => vin alb demisec has a 10% discount at store 1 and the price 21.15 after applying the discount
+2;20;2;3.90;5;2025-05-12 8:00:00.000000;2025-05-19 8:30:00.000000 => ciocolata neagra has a 5% discount at store 2 and the price 3.70 after applying the discount
+3;19;3;24.00;15;2025-05-15 9:30:00.000000;2025-05-22 9:30:00.000000 => vin alb demisec has a 15% discount at store 3, but the discount is not applied because it is only 14th of may 2025
+
+So the result that we should get is:
+vin alb demisec with 10% discount
+ciocolata neagra with 5% discount
+
+Let's test it and see the result that we get:
+
+
+[
+    {
+        "itemDiscountId": 1,
+        "storeItemId": 19,
+        "storeId": 1,
+        "oldPrice": 23.5,
+        "discountPercentage": 10.0,
+        "startDate": "2025-05-10T08:30:00",
+        "endDate": "2025-05-17T08:30:00",
+        "itemId": 19
+    },
+    {
+        "itemDiscountId": 2,
+        "storeItemId": 20,
+        "storeId": 2,
+        "oldPrice": 3.9,
+        "discountPercentage": 5.0,
+        "startDate": "2025-05-12T08:00:00",
+        "endDate": "2025-05-19T08:30:00",
+        "itemId": 20
+    }
+]
+
+If we check the result, it is correct.
+
+=============================================================================================================
+
+Third requirement: List discounts that have been newly added (e.g., within the last 24 hours, 48 and 72)
+
+Description of the solution: The backend checks for the discounts that have became active within a specific period of time and returns them (startDate <= now <= startDate+numberOfHours)
+
+The endpoint: http://localhost:8080/discounts/recent?hours={nr_of_hours}
+
+The date at which I'm writing this is: 14.05.2025 3:32 PM
+
+Let's take a look at the outgoing discounts:
+
+1;19;1;23.50;10;2025-05-10 8:30:00.000000;2025-05-17 8:30:00.000000 => vin alb demisec has a 10% discount at store 1. It was created like 4.25 days ago
+2;20;2;3.90;5;2025-05-12 8:00:00.000000;2025-05-19 8:30:00.000000 => ciocolata neagra has a 5% discount at store 2. I was created like 2.25 days ago
+3;19;3;24.00;15;2025-05-15 9:30:00.000000;2025-05-22 9:30:00.000000 => vin alb demisec has a 15% discount at store 3, but the discount is not applied because it is only 14th of may 2025
+and the discount starts on may 15th at 9:30 AM
+
+Let's test the endpoint with 72 hours. The result that we get should be the discount for ciocolata neagra
+
+Result is:
+
+[
+    {
+        "itemDiscountId": 2,
+        "storeItemId": 20,
+        "storeId": 2,
+        "oldPrice": 3.9,
+        "discountPercentage": 5.0,
+        "startDate": "2025-05-12T08:00:00",
+        "endDate": "2025-05-19T08:30:00",
+        "itemId": 20
+    }
+]
+
+Which is correct.
+
+If we test it with 128 hours, we should get both the discounts that are active. The result is:
+
+
+[
+    {
+        "itemDiscountId": 1,
+        "storeItemId": 19,
+        "storeId": 1,
+        "oldPrice": 23.5,
+        "discountPercentage": 10.0,
+        "startDate": "2025-05-10T08:30:00",
+        "endDate": "2025-05-17T08:30:00",
+        "itemId": 19
+    },
+    {
+        "itemDiscountId": 2,
+        "storeItemId": 20,
+        "storeId": 2,
+        "oldPrice": 3.9,
+        "discountPercentage": 5.0,
+        "startDate": "2025-05-12T08:00:00",
+        "endDate": "2025-05-19T08:30:00",
+        "itemId": 20
+    }
+]
+
+Which is correct.
+
+
+
+=============================================================================================================
+
+Fourth requirement: Dynamic Price History Graphs: - Provide data points that would allow a frontend to calculate and display price trends over time for individual products.
+- This data should be filterable by store, product category, or brand.
+
+Description of the solution: The backend has a custom filter function in the PriceHistoryRepo, and applies the filters that the endpoint contains
+
+The endpoint: http://localhost:8080/price-history/dynamic-price-history?storeId=store_id&category=category_name&brand=brand_name
+
+
+Let's take a look at the price history of our storeItems:
+
+id;date;price;store_id;store_item
+
+1,2025-05-14 14:57:22.152687,9.9,1,1
+2,2025-05-14 14:57:22.157686,11.5,1,2
+3,2025-05-14 14:57:22.159688,13.2,1,3
+4,2025-05-14 14:57:22.162686,12.8,1,4
+5,2025-05-14 14:57:22.164687,3.5,1,5
+6,2025-05-14 14:57:22.167687,6.8,1,6
+7,2025-05-14 14:57:22.169688,28.5,1,7
+8,2025-05-14 14:57:22.171686,5.8,1,8
+9,2025-05-14 14:57:22.173688,4.4,1,9
+10,2025-05-14 14:57:22.175688,5.2,1,10
+11,2025-05-14 14:57:22.177686,6.1,1,11
+12,2025-05-14 14:57:22.179688,9.2,1,12
+13,2025-05-14 14:57:22.181687,7.1,1,13
+14,2025-05-14 14:57:22.183686,22.4,1,14
+15,2025-05-14 14:57:22.185687,49.9,1,15
+16,2025-05-14 14:57:22.188688,17.8,1,16
+17,2025-05-14 14:57:22.189686,18.9,1,17
+18,2025-05-14 14:57:22.190690,6,1,18
+19,2025-05-14 14:57:22.192687,23.5,1,19
+20,2025-05-14 14:57:22.194687,3.9,1,20
+21,2025-05-14 14:57:22.195686,13.99,1,21
+22,2025-05-14 14:57:22.196688,3.49,1,22
+23,2025-05-14 14:57:22.198688,2.95,1,23
+24,2025-05-14 14:57:22.199689,3.1,1,24
+25,2025-05-14 14:57:22.201687,22,1,25
+26,2025-05-14 14:57:22.202687,12.9,2,26
+27,2025-05-14 14:57:22.204688,11.5,2,27
+28,2025-05-14 14:57:22.205687,12.2,2,28
+29,2025-05-14 14:57:22.207687,13.1,2,29
+30,2025-05-14 14:57:22.209687,3.5,2,30
+31,2025-05-14 14:57:22.210692,8.8,2,31
+32,2025-05-14 14:57:22.212687,26.5,2,32
+33,2025-05-14 14:57:22.213687,5.8,2,33
+34,2025-05-14 14:57:22.215686,4.4,2,34
+35,2025-05-14 14:57:22.216687,5.2,2,35
+36,2025-05-14 14:57:22.217687,6.1,2,36
+37,2025-05-14 14:57:22.219687,9.2,2,37
+38,2025-05-14 14:57:22.221687,7.1,2,38
+39,2025-05-14 14:57:22.222686,22.4,2,39
+40,2025-05-14 14:57:22.223686,49.9,2,40
+41,2025-05-14 14:57:22.224687,17.8,2,41
+42,2025-05-14 14:57:22.225686,18.9,2,42
+43,2025-05-14 14:57:22.227688,6,2,43
+44,2025-05-14 14:57:22.228686,23.5,2,44
+45,2025-05-14 14:57:22.230687,3.9,2,45
+46,2025-05-14 14:57:22.231687,14.5,2,46
+47,2025-05-14 14:57:22.233687,10.1,3,47
+48,2025-05-14 14:57:22.235687,11.8,3,48
+49,2025-05-14 14:57:22.236688,13.5,3,49
+50,2025-05-14 14:57:22.238687,13.1,3,50
+51,2025-05-14 14:57:22.239687,3.6,3,51
+52,2025-05-14 14:57:22.241687,7,3,52
+53,2025-05-14 14:57:22.242686,27.9,3,53
+54,2025-05-14 14:57:22.243688,5.9,3,54
+55,2025-05-14 14:57:22.245686,4.5,3,55
+56,2025-05-14 14:57:22.246688,5.3,3,56
+57,2025-05-14 14:57:22.248687,6.2,3,57
+58,2025-05-14 14:57:22.250686,9.5,3,58
+59,2025-05-14 14:57:22.251687,7.5,3,59
+60,2025-05-14 14:57:22.252686,23,3,60
+61,2025-05-14 14:57:22.253687,50.5,3,61
+62,2025-05-14 14:57:22.254686,18,3,62
+63,2025-05-14 14:57:22.255686,19.2,3,63
+64,2025-05-14 14:57:22.258686,6.1,3,64
+65,2025-05-14 14:57:22.260687,24,3,65
+66,2025-05-14 14:57:22.261687,4.1,3,66
+67,2025-05-14 14:57:22.263687,13.99,3,67
+68,2025-05-14 14:57:22.264688,3.99,3,68
+69,2025-05-14 14:57:22.265688,3.1,3,69
+70,2025-05-14 14:57:22.267687,2.99,3,70
+71,2025-05-14 14:57:22.268686,24.5,3,71
+72,2025-05-14 14:57:22.269687,8.5,3,72
+73,2025-05-14 14:57:22.271687,5.5,3,73
+74,2025-05-14 14:57:22.272687,8,3,74
+75,2025-05-14 14:57:22.273687,10.5,3,75
+76,2025-05-14 14:57:22.275686,2.6,3,76
+77,2025-05-14 15:26:00.060909,21.15,1,19
+78,2025-05-14 15:26:00.075909,3.7050002,1,20
+
+It contains all the data for their initial price (when the storeItem was created in that store), and also when a discount as been applied on a item.
+It will also contain the data of discounts expiring.
+
+Let's test it on some endpoints
+
+We want to get all the price history for items in the first store: http://localhost:8080/price-history/dynamic-price-history?storeId=1
+
+The result is:
+
+[
+    {
+        "priceHistoryId": 1,
+        "storeItemId": 1,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.152687",
+        "price": 9.9,
+        "category": "LACTATE",
+        "brand": "Zuzu"
+    },
+    {
+        "priceHistoryId": 2,
+        "storeItemId": 2,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.157686",
+        "price": 11.5,
+        "category": "LACTATE",
+        "brand": "Proxi"
+    },
+    {
+        "priceHistoryId": 3,
+        "storeItemId": 3,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.159688",
+        "price": 13.2,
+        "category": "OUA",
+        "brand": "facute de cocos"
+    },
+    {
+        "priceHistoryId": 4,
+        "storeItemId": 4,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.162686",
+        "price": 12.8,
+        "category": "LACTATE",
+        "brand": "Proxi"
+    },
+    {
+        "priceHistoryId": 5,
+        "storeItemId": 5,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.164687",
+        "price": 3.5,
+        "category": "PANIFICATIE",
+        "brand": "Proxi"
+    },
+    {
+        "priceHistoryId": 6,
+        "storeItemId": 6,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.167687",
+        "price": 6.8,
+        "category": "LEGUME_SI_FRUCTE",
+        "brand": "Generic"
+    },
+    {
+        "priceHistoryId": 7,
+        "storeItemId": 7,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.169688",
+        "price": 28.5,
+        "category": "CARNE",
+        "brand": "Avicola"
+    },
+    {
+        "priceHistoryId": 8,
+        "storeItemId": 8,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.171686",
+        "price": 5.8,
+        "category": "PASTE_FAINOASE",
+        "brand": "Barilla"
+    },
+    {
+        "priceHistoryId": 9,
+        "storeItemId": 9,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.173688",
+        "price": 4.4,
+        "category": "ALIMENTE_DE_BAZA",
+        "brand": "Proxi"
+    },
+    {
+        "priceHistoryId": 10,
+        "storeItemId": 10,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.175688",
+        "price": 5.2,
+        "category": "BAUTURI",
+        "brand": "Aqua Carpatica"
+    },
+    {
+        "priceHistoryId": 11,
+        "storeItemId": 11,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.177686",
+        "price": 6.1,
+        "category": "LEGUME_SI_FRUCTE",
+        "brand": "Generic"
+    },
+    {
+        "priceHistoryId": 12,
+        "storeItemId": 12,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.179688",
+        "price": 9.2,
+        "category": "ALIMENTE_DE_BAZA",
+        "brand": "Spornic"
+    },
+    {
+        "priceHistoryId": 13,
+        "storeItemId": 13,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.181687",
+        "price": 7.1,
+        "category": "GUSTARI",
+        "brand": "RoStar"
+    },
+    {
+        "priceHistoryId": 14,
+        "storeItemId": 14,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.183686",
+        "price": 22.4,
+        "category": "CAFEA",
+        "brand": "Tchibo"
+    },
+    {
+        "priceHistoryId": 15,
+        "storeItemId": 15,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.185687",
+        "price": 49.9,
+        "category": "PRODUSE_DE_MENAJ",
+        "brand": "Dero"
+    },
+    {
+        "priceHistoryId": 16,
+        "storeItemId": 16,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.188688",
+        "price": 17.8,
+        "category": "INGRIJIRE_PERSONALA",
+        "brand": "Schauma"
+    },
+    {
+        "priceHistoryId": 17,
+        "storeItemId": 17,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.189686",
+        "price": 18.9,
+        "category": "PRODUSE_DE_MENAJ",
+        "brand": "Motto"
+    },
+    {
+        "priceHistoryId": 18,
+        "storeItemId": 18,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.19069",
+        "price": 6.0,
+        "category": "CONDIMENTE",
+        "brand": "Kamis"
+    },
+    {
+        "priceHistoryId": 19,
+        "storeItemId": 19,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.192687",
+        "price": 23.5,
+        "category": "BAUTURI",
+        "brand": "Cotnari"
+    },
+    {
+        "priceHistoryId": 77,
+        "storeItemId": 19,
+        "storeId": 1,
+        "date": "2025-05-14T15:26:00.060909",
+        "price": 21.15,
+        "category": "BAUTURI",
+        "brand": "Cotnari"
+    },
+    {
+        "priceHistoryId": 20,
+        "storeItemId": 20,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.194687",
+        "price": 3.9,
+        "category": "GUSTARI",
+        "brand": "Poiana"
+    },
+    {
+        "priceHistoryId": 78,
+        "storeItemId": 20,
+        "storeId": 1,
+        "date": "2025-05-14T15:26:00.075909",
+        "price": 3.7050002,
+        "category": "GUSTARI",
+        "brand": "Poiana"
+    },
+    {
+        "priceHistoryId": 21,
+        "storeItemId": 21,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.195686",
+        "price": 13.99,
+        "category": "BAUTURI",
+        "brand": "Pepsi"
+    },
+    {
+        "priceHistoryId": 22,
+        "storeItemId": 22,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.196688",
+        "price": 3.49,
+        "category": "GUSTARI",
+        "brand": "Oreo"
+    },
+    {
+        "priceHistoryId": 23,
+        "storeItemId": 23,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.198688",
+        "price": 2.95,
+        "category": "LEGUME_SI_FRUCTE",
+        "brand": "Generic"
+    },
+    {
+        "priceHistoryId": 24,
+        "storeItemId": 24,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.199689",
+        "price": 3.1,
+        "category": "LEGUME_SI_FRUCTE",
+        "brand": "Generic"
+    },
+    {
+        "priceHistoryId": 25,
+        "storeItemId": 25,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.201687",
+        "price": 22.0,
+        "category": "PESTE",
+        "brand": "Lidl"
+    }
+]
+
+And we get all the history prices for items at store 1
+
+Let's add the LACTATE category: http://localhost:8080/price-history/dynamic-price-history?storeId=1&category=LACTATE
+
+The result is:
+
+
+[
+    {
+        "priceHistoryId": 1,
+        "storeItemId": 1,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.152687",
+        "price": 9.9,
+        "category": "LACTATE",
+        "brand": "Zuzu"
+    },
+    {
+        "priceHistoryId": 2,
+        "storeItemId": 2,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.157686",
+        "price": 11.5,
+        "category": "LACTATE",
+        "brand": "Proxi"
+    },
+    {
+        "priceHistoryId": 4,
+        "storeItemId": 4,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.162686",
+        "price": 12.8,
+        "category": "LACTATE",
+        "brand": "Proxi"
+    }
+]
+
+All the items at store 1 that have the LACTATE category
+
+
+Now if we add the brand Proxi: http://localhost:8080/price-history/dynamic-price-history?storeId=1&category=LACTATE&brand=Proxi
+
+The result is:
+
+[
+    {
+        "priceHistoryId": 2,
+        "storeItemId": 2,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.157686",
+        "price": 11.5,
+        "category": "LACTATE",
+        "brand": "Proxi"
+    },
+    {
+        "priceHistoryId": 4,
+        "storeItemId": 4,
+        "storeId": 1,
+        "date": "2025-05-14T14:57:22.162686",
+        "price": 12.8,
+        "category": "LACTATE",
+        "brand": "Proxi"
+    }
+]
+
+And we get all the store 1 items with category LACTATE and brand Proxi
+
+
+We can also make all the possible combination of filters and we'll have a total of 7 possible filters
+
+1, 2, 3 => 3 combinations
+1 + 2, 1 + 3, 2 + 3, => 3 combinations
+1 + 2 + 3 => 1 combination
+
+
+=============================================================================================================
+
+Fifth requirement: Product Substitutes & Recommendations: - Highlight "value per unit" (e.g., price per kg, price per liter) to help identify the best buys, even if the pack size differs.
+
+Description of the solution: The backend searches for all instances of store items of that item, calculates their price per unit, and returns the best instance of that item in a store
+that has the best deal (the value price per unit)
+
+The endpoint: http://localhost:8080/store-item/{{storeItemId}}/best-value
+
+
+So let's take a look at all store items instances for this item for example:
+
+8;spaghetti;PASTE_FAINOASE;Barilla;G => spaghetti
+
+8;1;8;5.80;500;RON => 5.80 RON at Lidl for 500 G of spaghetti
+
+33;2;8;5.80;500;RON => 5.80 RON at Profi for 550 G of spaghetti
+
+54;3;8;5.90;500;RON => 5.90 RON at Kaufland for 500 G of spaghetti
+
+So the best result is either the product at Lidl, or the one at Profi
+
+I'll use the endpoint: http://localhost:8080/store-item/8/best-value
+
+And the result is:
+
+{
+    "storeItemId": 33,
+    "storeId": 2,
+    "itemId": 8,
+    "totalPrice": 5.8,
+    "units": 550.0,
+    "valuePerUnit": 0.010545455,
+    "currency": "RON"
+}
+
+The product at Profi (we get a better deal because it has 50 G more than the one at Lidl)
+
+=============================================================================================================
+
+Sixth requirement: Custom Price Alert: - Allow users to set a target price for a product. 
+The system should be able to identify when a product's price drops to or below that target.
+
+Description of the solution: User sets the target price for a product, and when the endpoint is accessed, the backend checks if the price of that product is <= to the target price set by user
+It also works for the products that have a discount applied (because the discount service updates the product's price when detecting a discount, and also sets it back to the original price
+when the discount expires. It works because: <show the ItemDiscountService and DemoApplication> )
+
+The endpoint: http://localhost:8080/price-alerts/user/{{userId}}/get-triggered-alerts
+
+
+Let's take a look at the user's price alerts:
+
+
+id;user_id;store_item_id;target_price;
+
+1;1;7;28.00
+2;1;21;12.50
+3;1;25;22.00
+
+so the user has the alerts for the following storeItems:
+
+storeItem: id;store_id;item_id;total_price;units;currency
+
+For storeItem 7: 7;1;7;28.50;1;RON => item 7: 7;piept pui;CARNE;Avicola;KG => piept pui that has the item id of 7
+For storeItem 21: 21;1;21;13.99;2.5;RON => item 21: 21;suc pepsi;BAUTURI;Pepsi;L => suc pepsi that has the item id of 21
+For storeItem 25: 25;1;25;25.00;0.2;RON => item 25: 25;file somon;PESTE;Lidl;KG => file somon that has the item id of 25
+
+
+
+Let's search all the stores for the storeItems that are instances of those items
+
+piept pui:
+7;1;7;28.50;1;RON - lidl
+32;2;7;26.50;1;RON - profi - piept de pui has the lowest price, 26.50, at Profi
+53;3;7;27.90;1;RON - kaufland
+
+Found 2 possible matches for the price alert: the one at profi at kaufland. we pick the lowest price: so the result is the storeItem at profi
+
+
+suc pepsi:
+21;1;21;13.99;2.5;RON - ldil   - lowest price here
+46;2;21;14.50;2.5;RON - profi
+67;3;21;13.99;2.5;RON - kaufland   - lowest price here
+
+Found the lowest price at lidl and kaufland, but the user wants the item at 12.5, so the alert for this item is not valid, so we don't add the item to the response
+
+
+file somon:
+25;1;25;22.00;0.2;RON - lidl    - lowest price here
+71;3;25;24.50;0.2;RON - kaufland
+
+
+The only match for this item is found at lidl, with the price of 22.00
+The user has their target price set to 22.00, so it is valid to add this storeItem to the response
+
+
+Now let's test the endpoint: http://localhost:8080/price-alerts/user/1/get-triggered-alerts
+
+And the response is:
+
+[
+    {
+        "storeItem": {
+            "storeItemId": 32,
+            "storeId": 2,
+            "itemId": 7,
+            "totalPrice": 26.5,
+            "units": 1.0,
+            "currency": "RON"
+        },
+        "targetPrice": 28.0
+    },
+    {
+        "storeItem": {
+            "storeItemId": 25,
+            "storeId": 1,
+            "itemId": 25,
+            "totalPrice": 22.0,
+            "units": 0.2,
+            "currency": "RON"
+        },
+        "targetPrice": 22.0
+    }
+]
+
+Exactly the items that we calculated.
