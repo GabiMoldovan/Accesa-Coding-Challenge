@@ -141,7 +141,7 @@ Content-Type: application/json
 
 }
 
-Also, make sure that you add the user to the Authorisation section in Postman
+After creating the user, add the credentials to the Authorisation section in Postman so you are able to test the endpoints
 
 <img width="688" alt="Screenshot_1" src="https://github.com/user-attachments/assets/af4fe774-cb86-441c-87c6-108014be80e5" />
 
