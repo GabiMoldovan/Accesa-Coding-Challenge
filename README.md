@@ -141,10 +141,13 @@ Content-Type: application/json
 
 }
 
+Also, make sure that you add the user to the Authorisation section in Postman
+
+<img width="688" alt="Screenshot_1" src="https://github.com/user-attachments/assets/af4fe774-cb86-441c-87c6-108014be80e5" />
+
 # IMPORTANT
 
 7. If you want to automatically populate the database with the dummy data that I provided in the data for the "data for the data base" folder, please check the databaseInitializer and go to DatabaseInitializer
-
 
 
 In this file, you will find the documentation for implementing the project.
