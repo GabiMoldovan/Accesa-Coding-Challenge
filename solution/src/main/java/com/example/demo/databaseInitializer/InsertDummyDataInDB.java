@@ -164,7 +164,7 @@ public class InsertDummyDataInDB {
                 new StoreItemRequest(2L, 5L, 3.50f, 500, Currency.RON),
                 new StoreItemRequest(2L, 6L, 8.80f, 250, Currency.RON),
                 new StoreItemRequest(2L, 7L, 26.50f, 1, Currency.RON),
-                new StoreItemRequest(2L, 8L, 5.80f, 500, Currency.RON),
+                new StoreItemRequest(2L, 8L, 5.80f, 550, Currency.RON),
                 new StoreItemRequest(2L, 9L, 4.40f, 1, Currency.RON),
                 new StoreItemRequest(2L, 10L, 5.20f, 2, Currency.RON),
                 new StoreItemRequest(2L, 11L, 6.10f, 1, Currency.RON),

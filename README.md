@@ -51,7 +51,7 @@ The endpoint will return the optimized baskets
 Best Discounts: - List products with the highest current percentage discounts across all tracked stores.
 
 The backend gets all the store items that have a discount, and sort them descending, and return the list of discounts with unique items
-(the items with the lowest prices after the discounts)
+(if multiple items have a discount, we only get the item that has the biggest discount)
 - SOLVED -
 GET http://localhost:8080/discounts/all-items-discounts-with-max-discount-per-item
 
@@ -70,6 +70,8 @@ GET http://localhost:8080/discounts/recent?hours={nr_of_hours}
 Dynamic Price History Graphs: - Provide data points that would allow a frontend to calculate
 				and display price trends over time for individual products.  
  			      - This data should be filterable by store, product category, or brand.
+
+The backend has a custom filter function in the PriceHistoryRepo, and applies the filters that the endpoint contains
 - SOLVED -
 GET http://localhost:8080/price-history/dynamic-price-history?
 

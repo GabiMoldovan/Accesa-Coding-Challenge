@@ -7,7 +7,7 @@ USERS:
 
 id;email;first_name;last_name;password
 
-I created the user using Postman, then injected the dummy data into the data base using the script
+I created the user using Postman, then injected the dummy data into the data base using the DatabaseInitializer
 
 ===============================================================================>
 
@@ -123,7 +123,7 @@ Products at Lidl:
 22;1;22;3.49;1;RON
 23;1;23;2.95;1;RON
 24;1;24;3.10;1;RON
-25;1;25;25.00;0.2;RON
+25;1;25;22.00;0.2;RON
 
 
 
@@ -135,7 +135,7 @@ Products at Lidl:
 27;2;2;11.50;0.4;RON
 28;2;3;12.20;10;RON
 29;2;4;13.10;0.3;RON
-30;2;5;3.50;500;RON
+30;2;5;3.50;550;RON
 31;2;6;8.80;250;RON
 32;2;7;26.50;1;RON
 33;2;8;5.80;500;RON
@@ -284,7 +284,7 @@ price_alerts
 
 id;user_id;store_item_id;target_price;
 
-1;1;7;25.00
+1;1;7;28.00
 2;1;21;12.50
 3;1;25;22.00
 
