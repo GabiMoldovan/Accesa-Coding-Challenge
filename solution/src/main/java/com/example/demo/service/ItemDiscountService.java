@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.itemDiscount.ItemDiscountRequest;
 import com.example.demo.dto.itemDiscount.ItemDiscountResponse;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.model.BasketItem;
 import com.example.demo.model.ItemDiscount;
 import com.example.demo.model.Store;
 import com.example.demo.model.StoreItem;
@@ -21,13 +22,16 @@ public class ItemDiscountService {
     private final StoreItemRepo storeItemRepository;
     private final StoreRepo storeRepository;
     private final PriceHistoryService priceHistoryService;
+    private final BasketItemRepo basketItemRepository;
 
     public ItemDiscountService(ItemDiscountRepo discountRepository, StoreItemRepo storeItemRepository,
-                               StoreRepo storeRepository, PriceHistoryService priceHistoryService) {
+                               StoreRepo storeRepository, PriceHistoryService priceHistoryService,
+                               BasketItemRepo basketItemRepository) {
         this.discountRepository = discountRepository;
         this.storeItemRepository = storeItemRepository;
         this.storeRepository = storeRepository;
         this.priceHistoryService = priceHistoryService;
+        this.basketItemRepository = basketItemRepository;
     }
 
     public ItemDiscountResponse createDiscount(ItemDiscountRequest request) {
@@ -144,8 +148,16 @@ public class ItemDiscountService {
             float discountedPrice = calculateDiscountedPrice(discount);
 
             if (storeItem.getTotalPrice() != discountedPrice) {
+                // Update store item price
                 storeItem.setTotalPrice(discountedPrice);
                 storeItemRepository.save(storeItem);
+
+                // Update all basket items with this store item
+                List<BasketItem> basketItems = basketItemRepository.findByStoreItem(storeItem);
+                basketItems.forEach(basketItem -> {
+                    basketItem.setPriceAtAddition(discountedPrice);
+                    basketItemRepository.save(basketItem);
+                });
 
                 priceHistoryService.recordPriceChange(
                         storeItem.getItem().getId(),
@@ -164,15 +176,22 @@ public class ItemDiscountService {
             float originalPrice = discount.getOldPrice();
 
             if (storeItem.getTotalPrice() == calculateDiscountedPrice(discount)) {
+                // Revert store item price
                 storeItem.setTotalPrice(originalPrice);
                 storeItemRepository.save(storeItem);
+
+                // Update all basket items with this store item
+                List<BasketItem> basketItems = basketItemRepository.findByStoreItem(storeItem);
+                basketItems.forEach(basketItem -> {
+                    basketItem.setPriceAtAddition(originalPrice);
+                    basketItemRepository.save(basketItem);
+                });
 
                 priceHistoryService.recordPriceChange(
                         storeItem.getItem().getId(),
                         storeItem.getStore().getId(),
                         originalPrice
                 );
-
             }
         });
     }
