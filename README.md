@@ -327,3 +327,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 # 14.02.2025
 
 1. I created an API documentation where you can search how to call almost every endpoint that the application exposes
+
+2. I created the presentation video
+
+3. I added docstrings in the services
