@@ -19,6 +19,13 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
+
+    /**
+     * Creates a new item based on the provided request details
+     *
+     * @param request the item creation request containing name, category, brand, and unit type
+     * @return the created item as a response DTO
+     */
     public ItemResponse createItem(ItemRequest request) {
         Item item = new Item();
         item.setItemName(request.itemName());
@@ -29,11 +36,21 @@ public class ItemService {
         return convertToResponse(savedItem);
     }
 
+
+    /**
+     * Retrieves an item by its ID
+     *
+     * @param id the ID of the item to retrieve
+     * @return the found item as a response DTO
+     * @throws NotFoundException if the item is not found
+     */
     public ItemResponse getItemById(Long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Item not found"));
         return convertToResponse(item);
     }
+
+
 
     private ItemResponse convertToResponse(Item item) {
         return new ItemResponse(
@@ -45,6 +62,15 @@ public class ItemService {
         );
     }
 
+
+    /**
+     * Updates an existing item partially using the provided patch request
+     *
+     * @param id the ID of the item to update
+     * @param request the patch request with updated fields (can be partially filled)
+     * @return the updated item as a response DTO
+     * @throws NotFoundException if the item is not found
+     */
     @Transactional
     public ItemResponse updateItem(Long id, ItemPatchRequest request) {
         Item item = itemRepository.findById(id)
@@ -58,6 +84,14 @@ public class ItemService {
         return convertToResponse(itemRepository.save(item));
     }
 
+
+    /**
+     * Deletes an item by its ID
+     *
+     * @param id the ID of the item to delete
+     * @return the deleted item as a response DTO
+     * @throws NotFoundException if the item is not found
+     */
     public ItemResponse deleteItem(Long id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Item not found"));
@@ -66,6 +100,12 @@ public class ItemService {
         return convertToResponse(item);
     }
 
+
+    /**
+     * Retrieves all items in the repository
+     *
+     * @return a list of all items as response DTOs
+     */
     public List<ItemResponse> getAllItems() {
         return itemRepository.findAll().stream()
                 .map(this::convertToResponse)

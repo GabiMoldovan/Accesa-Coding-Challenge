@@ -32,6 +32,14 @@ public class StoreService {
         this.historyRepository = historyRepository;
     }
 
+
+    /**
+     * Creates a new store, along with associated store items, discounts, and price histories
+     *
+     * @param request the store request containing company name, store items, discounts, and price history details
+     * @return the created store as a response DTO
+     * @throws NotFoundException if any store item, discount, or price history reference is not found
+     */
     @Transactional
     public StoreResponse createStore(StoreRequest request) {
         Store store = new Store();
@@ -145,12 +153,29 @@ public class StoreService {
         );
     }
 
+
+    /**
+     * Retrieves a store by its ID
+     *
+     * @param id the ID of the store to retrieve
+     * @return the store as a response DTO
+     * @throws NotFoundException if the store with the specified ID is not found
+     */
     public StoreResponse getStoreById(Long id) {
         Store store = storeRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Store not found"));
         return convertToResponse(store);
     }
 
+
+    /**
+     * Updates an existing store with a new company name
+     *
+     * @param id the ID of the store to update
+     * @param companyName the new company name for the store
+     * @return the updated store as a response DTO
+     * @throws NotFoundException if the store with the specified ID is not found
+     */
     @Transactional
     public StoreResponse updateStore(Long id, String companyName) {
         Store store = storeRepository.findById(id)
@@ -162,6 +187,14 @@ public class StoreService {
         return convertToResponse(updatedStore);
     }
 
+
+    /**
+     * Deletes a store by its ID
+     *
+     * @param id the ID of the store to delete
+     * @return the deleted store as a response DTO
+     * @throws NotFoundException if the store with the specified ID is not found
+     */
     @Transactional
     public StoreResponse deleteStore(Long id) {
         Store store = storeRepository.findById(id)

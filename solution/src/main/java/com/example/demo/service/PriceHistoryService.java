@@ -56,6 +56,17 @@ public class PriceHistoryService {
         );
     }
 
+
+    /**
+     * Records a price change for a store item at a specific store
+     *
+     * This method is transactional and adds a new price history entry with the current date and time
+     *
+     * @param itemId the ID of the item
+     * @param storeId the ID of the store
+     * @param newPrice the new price of the item
+     * @throws NotFoundException if the store item is not found
+     */
     @Transactional
     public void recordPriceChange(Long itemId, Long storeId, float newPrice) {
         StoreItem storeItem = storeItemRepository.findByItemIdAndStoreId(itemId, storeId)
@@ -70,6 +81,15 @@ public class PriceHistoryService {
         historyRepository.save(history);
     }
 
+
+    /**
+     * Retrieves the price history for a specific store, category, and brand
+     *
+     * @param storeId the ID of the store
+     * @param category the category of the items
+     * @param brand the brand of the items
+     * @return a list of price history entries matching the filter criteria as response DTOs
+     */
     public List<PriceHistoryResponse> getFilteredPriceHistoryByStoreCategoryBrand(Long storeId, Category category, String brand) {
         return historyRepository.findFilteredByStoreCategoryBrand(storeId, category, brand)
                 .stream()
@@ -77,6 +97,15 @@ public class PriceHistoryService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Retrieves all price history entries for a specific item at a given store
+     *
+     * @param itemId the ID of the item
+     * @param storeId the ID of the store
+     * @return a list of price history entries for the item at the store as response DTOs
+     * @throws NotFoundException if no price history is found for the item at the store
+     */
     public List<PriceHistoryResponse> getAllPriceHistoryForItemAtStore(Long itemId, Long storeId) {
         List<PriceHistory> historyList = historyRepository.findByItemIdAndStoreId(itemId, storeId);
 

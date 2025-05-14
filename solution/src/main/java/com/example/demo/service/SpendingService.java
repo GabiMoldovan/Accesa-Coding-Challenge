@@ -25,6 +25,14 @@ public class SpendingService {
         this.storeRepository = storeRepository;
     }
 
+
+    /**
+     * Creates a new spending entry along with associated purchased items
+     *
+     * @param request the spending request containing user ID, store ID, total price, purchase date, and purchased items
+     * @return the created spending as a response DTO
+     * @throws NotFoundException if the user or store associated with the request is not found
+     */
     @Transactional
     public SpendingResponse createSpending(SpendingRequest request) {
         User user = userRepository.findById(request.userId())

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
 public class BasketService {
     private final BasketRepo basketRepository;
@@ -34,6 +35,14 @@ public class BasketService {
         this.basketItemRepository = basketItemRepository;
     }
 
+
+    /**
+     * Creates a new basket with associated items
+     *
+     * @param request the request containing basket and item details
+     * @return the created BasketResponse
+     * @throws NotFoundException if user, store, or store item is not found
+     */
     @Transactional
     public BasketResponse createBasket(BasketRequest request) {
         User user = userRepository.findById(request.userId())
@@ -56,12 +65,28 @@ public class BasketService {
         return convertToResponse(basketRepository.save(savedBasket));
     }
 
+
+    /**
+     * Retrieves a basket by its ID
+     *
+     * @param id the ID of the basket
+     * @return the BasketResponse
+     * @throws NotFoundException if the basket is not found
+     */
     public BasketResponse getBasketById(Long id) {
         Basket basket = basketRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Basket not found"));
         return convertToResponse(basket);
     }
 
+
+    /**
+     * Retrieves all baskets associated with a specific user
+     *
+     * @param userId the user's ID
+     * @return list of BasketResponses
+     * @throws NotFoundException if the user is not found
+     */
     public List<BasketResponse> getBasketsByUserId(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -73,6 +98,12 @@ public class BasketService {
     }
 
 
+    /**
+     * Deletes a basket by its ID.
+     *
+     * @param id the ID of the basket to delete
+     * @throws NotFoundException if the basket is not found
+     */
     @Transactional
     public void deleteBasket(Long id) {
         Basket basket = basketRepository.findById(id)
@@ -103,10 +134,26 @@ public class BasketService {
         );
     }
 
+
+    /**
+     * Finds a basket by user ID and store ID
+     *
+     * @param userId the user ID
+     * @param storeId the store ID
+     * @return an Optional containing the Basket if found
+     */
     public Optional<Basket> findByUserIdAndStoreId(Long userId, Long storeId) {
         return basketRepository.findByUserIdAndStoreId(userId, storeId);
     }
 
+
+    /**
+     * Creates and persists a new Basket entity from the given request
+     *
+     * @param request the basket request
+     * @return the created Basket entity
+     * @throws NotFoundException if user, store, or store item is not found
+     */
     public Basket createBasketEntity(BasketRequest request) {
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + request.userId()));
@@ -139,12 +186,28 @@ public class BasketService {
         return basketRepository.save(savedBasket);
     }
 
+
+    /**
+     * Retrieves a Basket entity by its ID
+     *
+     * @param basketId the ID of the basket
+     * @return the Basket entity
+     * @throws NotFoundException if the basket is not found
+     */
     public Basket getBasketEntityById(Long basketId) {
         return basketRepository.findById(basketId)
                 .orElseThrow(() -> new NotFoundException("Basket not found with id: " + basketId));
     }
 
 
+
+    /**
+     * Optimizes user's baskets by relocating items to the baskets with the cheapest available store items.
+     *
+     * @param userId the user's ID
+     * @return list of optimized BasketResponses
+     * @throws NotFoundException if the user is not found
+     */
     @Transactional
     public List<BasketResponse> optimizeBaskets(Long userId) {
         User user = userRepository.findById(userId)

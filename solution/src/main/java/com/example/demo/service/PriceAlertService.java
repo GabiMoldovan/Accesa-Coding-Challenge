@@ -32,6 +32,14 @@ public class PriceAlertService {
         this.storeItemRepository = storeItemRepository;
     }
 
+
+    /**
+     * Creates a new price alert for a specific user and store item
+     *
+     * @param request the price alert request containing user ID, store item ID, and target price
+     * @return the created price alert as a response DTO
+     * @throws NotFoundException if the user or store item is not found
+     */
     public PriceAlertResponse createAlert(PriceAlertRequest request) {
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -47,6 +55,8 @@ public class PriceAlertService {
         return convertToResponse(savedAlert);
     }
 
+
+
     private PriceAlertResponse convertToResponse(PriceAlert alert) {
         return new PriceAlertResponse(
                 alert.getId(),
@@ -55,6 +65,8 @@ public class PriceAlertService {
                 alert.getTargetPrice()
         );
     }
+
+
 
     @Transactional
     public void checkAllAlerts() {
@@ -73,6 +85,15 @@ public class PriceAlertService {
         });
     }
 
+
+    /**
+     * Updates the target price of an existing alert
+     *
+     * @param id the ID of the alert to update
+     * @param newPrice the new target price
+     * @return the updated price alert as a response DTO
+     * @throws NotFoundException if the price alert is not found
+     */
     public PriceAlertResponse updateAlert(Long id, float newPrice) {
         PriceAlert alert = alertRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Price alert not found"));
@@ -82,6 +103,14 @@ public class PriceAlertService {
         return convertToResponse(updated);
     }
 
+
+    /**
+     * Deletes an existing price alert by its ID
+     *
+     * @param id the ID of the price alert to delete
+     * @return the deleted price alert as a response DTO
+     * @throws NotFoundException if the price alert is not found
+     */
     public PriceAlertResponse deleteAlert(Long id) {
         PriceAlert alert = alertRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Price alert not found"));
@@ -91,6 +120,14 @@ public class PriceAlertService {
     }
 
 
+
+    /**
+     * Retrieves all price alerts for a specific user
+     *
+     * @param userId the ID of the user
+     * @return a list of the user's price alerts as response DTOs
+     * @throws NotFoundException if the user is not found
+     */
     public List<PriceAlertResponse> getAlertsByUserId(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
@@ -101,6 +138,14 @@ public class PriceAlertService {
                 .toList();
     }
 
+
+    /**
+     * Retrieves all triggered alerts for a specific user where the current store item price is
+     * below or equal to the alert target price
+     *
+     * @param userId the ID of the user
+     * @return a list of triggered alerts with the cheapest store item and target price
+     */
     public List<TriggeredPriceAlertResponse> getTriggeredAlerts(Long userId) {
         List<PriceAlert> alerts = alertRepository.findByUserId(userId);
 

@@ -34,6 +34,14 @@ public class ItemDiscountService {
         this.basketItemRepository = basketItemRepository;
     }
 
+
+    /**
+     * Creates a new discount for a store item using the provided request details
+     *
+     * @param request the discount request containing store item ID, store ID, old price, discount percentage, start and end dates
+     * @return the created discount as a response DTO
+     * @throws NotFoundException if the store item or store is not found
+     */
     public ItemDiscountResponse createDiscount(ItemDiscountRequest request) {
         StoreItem storeItem = storeItemRepository.findById(request.storeItemId())
                 .orElseThrow(() -> new NotFoundException("StoreItem not found"));
@@ -52,6 +60,15 @@ public class ItemDiscountService {
         return convertToResponse(savedDiscount);
     }
 
+
+    /**
+     * Updates an existing discount with new details
+     *
+     * @param id the ID of the discount to update
+     * @param request the updated discount information
+     * @return the updated discount as a response DTO
+     * @throws NotFoundException if the discount, store item, or store is not found
+     */
     public ItemDiscountResponse updateDiscount(Long id, ItemDiscountRequest request) {
         ItemDiscount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Discount not found"));
@@ -72,6 +89,14 @@ public class ItemDiscountService {
         return convertToResponse(discountRepository.save(discount));
     }
 
+
+    /**
+     * Deletes a discount by its ID
+     *
+     * @param id the ID of the discount to delete
+     * @return the deleted discount as a response DTO
+     * @throws NotFoundException if the discount is not found
+     */
     public ItemDiscountResponse deleteDiscount(Long id) {
         ItemDiscount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Discount not found"));
@@ -79,6 +104,8 @@ public class ItemDiscountService {
         discountRepository.delete(discount);
         return convertToResponse(discount);
     }
+
+
 
 
     private ItemDiscountResponse convertToResponse(ItemDiscount discount) {
@@ -95,6 +122,13 @@ public class ItemDiscountService {
         );
     }
 
+
+    /**
+     * Retrieves a list of discounts active at the specified date and time
+     *
+     * @param date the timestamp to check for active discounts
+     * @return a list of active discounts as response DTOs
+     */
     public List<ItemDiscountResponse> getActiveDiscounts(LocalDateTime date) {
         return discountRepository
                 .findByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date)
@@ -103,6 +137,13 @@ public class ItemDiscountService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Retrieves a list of active discounts with unique items at the specified date and time
+     *
+     * @param date the timestamp to check for active discounts
+     * @return a list of active discounts with unique items as response DTOs
+     */
     public List<ItemDiscountResponse> getActiveDiscountsWithUniqueItems(LocalDateTime date) {
         return discountRepository.findActiveDiscountsWithItems(date, date)
                 .stream()
@@ -111,6 +152,12 @@ public class ItemDiscountService {
     }
 
 
+    /**
+     * Retrieves a list of top discounts sorted by highest discount percentage
+     *
+     * @param limit the maximum number of discounts to return
+     * @return a list of top discounts as response DTOs
+     */
     public List<ItemDiscountResponse> getTopDiscounts(int limit) {
         return discountRepository
                 .findAllByOrderByDiscountPercentageDesc()
@@ -120,6 +167,13 @@ public class ItemDiscountService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Retrieves all discounts associated with a specific item
+     *
+     * @param itemId the ID of the item
+     * @return a list of discounts for the specified item as response DTOs
+     */
     public List<ItemDiscountResponse> getDiscountsForItem(Long itemId) {
         List<ItemDiscount> discounts = discountRepository.findAllByStoreItem_Item_Id(itemId);
         return discounts.stream()
@@ -127,6 +181,12 @@ public class ItemDiscountService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Scheduled task that runs every minute to apply new discounts and remove expired ones
+     *
+     * Applies active discounts and reverts prices for discounts that have ended
+     */
     @Scheduled(cron = "0 * * * * *") // This makes the metod run every minute
     @Transactional
     public void handleDiscountsAutomatically() {
@@ -138,6 +198,7 @@ public class ItemDiscountService {
         // eliminate the expired discounts
         expireEndedDiscounts(now);
     }
+
 
     private void applyActiveDiscounts(LocalDateTime now) {
         List<ItemDiscount> activeDiscounts = discountRepository
@@ -200,6 +261,13 @@ public class ItemDiscountService {
         return discount.getOldPrice() * (1 - discount.getDiscountPercentage() / 100);
     }
 
+
+    /**
+     * Retrieves discounts that were active within the last given number of hours
+     *
+     * @param hours the number of past hours to check
+     * @return a list of discounts that were active in the specified time window as response DTOs
+     */
     public List<ItemDiscountResponse> getDiscountsActiveInLastGivenHours(int hours) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime cutoffStart = now.minusHours(hours);

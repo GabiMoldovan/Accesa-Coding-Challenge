@@ -26,6 +26,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    /**
+     * Saves a new user with the provided user request details
+     *
+     * @param userRequest the user request containing first name, last name, email, and password
+     * @return the saved user as a response DTO
+     */
     @Transactional
     public UserResponse saveUser(UserRequest userRequest) {
         String encodedPassword = passwordEncoder.encode(userRequest.password());
@@ -39,12 +46,28 @@ public class UserService {
         return UserMapper.entityToDto(userRepository.save(userToSave));
     }
 
+
+    /**
+     * Deletes a user by their ID
+     *
+     * @param userId the ID of the user to delete
+     */
     @Transactional
     public void deleteUser(Long userId) {
         User user = findById(userId);
         userRepository.delete(user);
     }
 
+
+
+    /**
+     * Updates an existing user's profile with the provided details
+     *
+     * @param userId the ID of the user to update
+     * @param profileRequest the profile request containing updated first name, last name, and email
+     * @return the updated user as a response DTO
+     * @throws AlreadyExistsException if the email already exists in the system
+     */
     @Transactional
     public UserResponse updateUser(Long userId, UserProfileRequest profileRequest) {
         User user = findById(userId);
@@ -61,6 +84,14 @@ public class UserService {
         return UserMapper.entityToDto(userRepository.save(user));
     }
 
+
+    /**
+     * Changes the password of a user by verifying the old password and updating with the new password
+     *
+     * @param email the email of the user whose password is to be changed
+     * @param passwordChangeRequest the request containing the old and new passwords
+     * @throws AuthException.InvalidCredentialsException if the old password does not match
+     */
     @Transactional
     @PreAuthorize("#email == authentication.principal.username")
     public void changePassword(String email, PasswordChangeRequest passwordChangeRequest) {
