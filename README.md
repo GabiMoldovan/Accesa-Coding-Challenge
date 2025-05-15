@@ -19,26 +19,18 @@ I modified the initial problem a bit, to make it more general:
 
 
 Let's imagine that we are building the backend for an online mall.
-
 The mall has multiple stores, and each store with its own pool of items. 
-
 Each store has its own configuration for each item.
-
 We have multiple users using our online mall application.
-
 Each user has their own baskets, a basket for each store
 
 
 Store items can have discounts applied to them.
-
 Store item prices must be updated when discounts are created.
-
 If a discount expires, the price of that store item must be set back to the original price.
-
 (This feature is functional as well)
 
 When an item is registered as a store item, we also make an entry for the price history for that item
-
 And any time the price of a store item is updated, we register the entry in the price history (updated by user or discount)
 
 
