@@ -147,6 +147,28 @@ After creating the user, add the credentials to the Authorisation section in Pos
 
 <img width="688" alt="Screenshot_1" src="https://github.com/user-attachments/assets/af4fe774-cb86-441c-87c6-108014be80e5" />
 
+
+# SWAGGER
+
+If you want to acces the Swagger API Documentation:
+
+1. Start the application
+
+2. Go to http://localhost:8080/swagger-ui/index.html
+
+
+You will get the documentation for each endpoint for every controller that exist in the app
+
+
+<img width="720" alt="Screenshot_1" src="https://github.com/user-attachments/assets/291cbcb0-b787-48be-a8eb-a3a3d2a3dc85" />
+
+<img width="722" alt="Screenshot_3" src="https://github.com/user-attachments/assets/f1722f61-7881-456b-ba62-7e6933766755" />
+
+<img width="734" alt="Screenshot_4" src="https://github.com/user-attachments/assets/1898c64a-1111-44f5-b35e-cae66a360c1b" />
+
+<img width="725" alt="Screenshot_5" src="https://github.com/user-attachments/assets/0531422b-6f39-482f-91c2-029ab557c605" />
+
+
 # IMPORTANT
 
 7. If you want to automatically populate the database with the dummy data that I provided in the data for the "data for the data base" folder, please check the databaseInitializer and go to DatabaseInitializer
