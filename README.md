@@ -358,3 +358,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 2. I created the presentation video
 
 3. I added docstrings in the services
+
+# 21.05.2025
+
+1. I added the SWAGGER section here in the README file
