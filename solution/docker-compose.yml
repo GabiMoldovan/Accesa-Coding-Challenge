@@ -4,9 +4,9 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: AccesaInternship
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1337
+      - DATASOURCE_URL=${DATASOURCE_URL}
+      - DATASOURCE_USER=${DATASOURCE_USER}
+      - DATASOURCE_PASS=${DATASOURCE_PASS}
     ports:
       - "5432:5432"
     volumes:
