@@ -169,6 +169,16 @@ You will get the documentation for each endpoint for every controller that exist
 <img width="725" alt="Screenshot_5" src="https://github.com/user-attachments/assets/0531422b-6f39-482f-91c2-029ab557c605" />
 
 
+# DOCKER
+
+If you want to start the application through docker, follow these steps:
+
+1. Open a terminal and navigate in the solution folder (the folder where you can find the Dockerfile)
+
+2. Run: docker-compose up --build
+
+You will be able to use the app as normal, but you won't have a populated databse (all endpoints are exposed on localhost 8080)
+
 # IMPORTANT
 
 7. If you want to automatically populate the database with the dummy data that I provided in the data for the "data for the data base" folder, please check the databaseInitializer and go to DatabaseInitializer
@@ -362,3 +372,7 @@ DISCLAIMER: I know that the photo it not clear. If you want to see the diagram f
 # 21.05.2025
 
 1. I added the SWAGGER section here in the README file
+
+# 23.05.2025
+
+1. I added the docker section here in the README file
