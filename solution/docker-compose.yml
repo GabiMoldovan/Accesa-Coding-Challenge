@@ -1,16 +1,14 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15
     environment:
-      - DATASOURCE_URL=${DATASOURCE_URL}
-      - DATASOURCE_USER=${DATASOURCE_USER}
-      - DATASOURCE_PASS=${DATASOURCE_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "7777:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
   app:
     build: .
@@ -19,9 +17,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DATASOURCE_URL: jdbc:postgresql://db:5432/AccesaInternship
-      DATASOURCE_USER: postgres
-      DATASOURCE_PASS: 1337
+      - DATASOURCE_URL=${DATASOURCE_URL}
+      - DATASOURCE_USER=${DATASOURCE_USER}
+      - DATASOURCE_PASS=${DATASOURCE_PASS}
 
 volumes:
-  pgdata:
+  postgres_data:

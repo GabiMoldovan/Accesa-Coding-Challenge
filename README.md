@@ -173,9 +173,11 @@ You will get the documentation for each endpoint for every controller that exist
 
 If you want to start the application through docker, follow these steps:
 
-1. Open a terminal and navigate in the solution folder (the folder where you can find the Dockerfile)
+1. Create the .env file. Follow the .env-file-example
 
-2. Run: docker-compose up --build
+2. Open a terminal and navigate in the solution folder (the folder where you can find the Dockerfile)
+
+3. Run: docker-compose up --build
 
 You will be able to use the app as normal, but you won't have a populated databse (all endpoints are exposed on localhost 8080)
 
